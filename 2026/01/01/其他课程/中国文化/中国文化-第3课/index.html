@@ -1,12 +1,110 @@
 <!DOCTYPE html>
+<html lang="zh-CN" class="mobile-optimized">
+<head>
+  <meta charset="UTF-8">
+  <!-- 关键Viewport设置 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
+  
+  <!-- 移动端优化 -->
+  <meta name="format-detection" content="telephone=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#3498db">
+  
+  <title>中国文化第3课：中国传统服饰文化 - 幼儿园课件资源中心</title>
+  
+  <!-- 基本CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/mobile-fix.css">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <style>
+    /* 内联关键CSS以确保立即加载 */
+    .mobile-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    
+    .mobile-loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+  <!-- 移动端加载动画 -->
+  <div class="mobile-loading" id="mobile-loading">
+    <div class="mobile-loading-spinner"></div>
+  </div>
+  
+  <!-- 简化版头部 -->
+  <header class="mobile-header">
+    <div class="mobile-header-content">
+      <a href="/" class="mobile-logo">
+        <i class="fas fa-school"></i>
+        <span>幼儿园课件资源中心</span>
+      </a>
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    
+    <!-- 移动端导航 -->
+    <nav class="mobile-nav" id="mobile-nav">
+      <div class="mobile-nav-content">
+        <a href="/" class="mobile-nav-item">
+          <i class="fas fa-home"></i> 首页
+        </a>
+        <a href="/categories/小班" class="mobile-nav-item">
+          <i class="fas fa-child"></i> 小班课程
+        </a>
+        <a href="/categories/中班" class="mobile-nav-item">
+          <i class="fas fa-user-graduate"></i> 中班课程
+        </a>
+        <a href="/categories/大班" class="mobile-nav-item">
+          <i class="fas fa-user-tie"></i> 大班课程
+        </a>
+        
+        
+        <a href="/categories/其他课程" class="mobile-nav-item">
+          <i class="fas fa-ellipsis-h"></i> 其他课程
+        </a>
+        
+      </div>
+    </nav>
+  </header>
+  
+  <!-- 主要内容 -->
+  <main class="mobile-main">
+    <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>中国文化第3课：中国传统服饰文化 - 幼儿园课件资源中心</title>
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<meta name="generator" content="Hexo 8.1.1"></head>
+</head>
 <body>
   <header class="site-header">
   <div class="header-container">
@@ -559,5 +657,176 @@ document.addEventListener('DOMContentLoaded', function() {
       <p>&copy; 2026 你的名字. 保留所有权利.</p>
     </div>
   </footer>
+</body>
+</html>
+
+  </main>
+  
+  <!-- 简化版页脚 -->
+  <footer class="mobile-footer">
+    <p>&copy; 2026 你的名字</p>
+  </footer>
+  
+  <!-- 移动端优化脚本 -->
+  <script>
+  // 立即执行，避免依赖DOMContentLoaded
+  (function() {
+    // 隐藏加载动画
+    document.getElementById('mobile-loading').style.display = 'none';
+    
+    // 移动端导航切换
+    var menuToggle = document.getElementById('mobile-menu-toggle');
+    var mobileNav = document.getElementById('mobile-nav');
+    
+    if (menuToggle && mobileNav) {
+      menuToggle.addEventListener('click', function() {
+        mobileNav.classList.toggle('active');
+      });
+      
+      // 点击其他地方关闭菜单
+      document.addEventListener('click', function(event) {
+        if (!menuToggle.contains(event.target) && !mobileNav.contains(event.target)) {
+          mobileNav.classList.remove('active');
+        }
+      });
+    }
+    
+    // 修复移动端触摸事件
+    document.addEventListener('touchstart', function(e) {
+      // 防止多点触控
+      if (e.touches.length > 1) e.preventDefault();
+    }, { passive: false });
+    
+    // 防止双击缩放
+    var lastTouchTime = 0;
+    document.addEventListener('touchend', function(e) {
+      var now = Date.now();
+      if (now - lastTouchTime < 300) e.preventDefault();
+      lastTouchTime = now;
+    }, false);
+    
+    // 修复iOS 100vh问题
+    function setVH() {
+      var vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', vh + 'px');
+    }
+    setVH();
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', setVH);
+    
+    // 错误处理
+    window.addEventListener('error', function(e) {
+      console.error('Mobile error:', e.message);
+    }, true);
+    
+    // 确保所有链接正确
+    document.querySelectorAll('a').forEach(function(link) {
+      if (link.href && link.href.indexOf('http') === 0) {
+        link.setAttribute('target', '_blank');
+      }
+    });
+  })();
+  </script>
+  
+  <style>
+  /* 移动端专用样式 */
+  .mobile-header {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  
+  .mobile-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+  }
+  
+  .mobile-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .mobile-logo i {
+    margin-right: 10px;
+    color: #3498db;
+    font-size: 24px;
+  }
+  
+  .mobile-menu-toggle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #333;
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .mobile-nav {
+    display: none;
+    background: white;
+    border-top: 1px solid #eee;
+  }
+  
+  .mobile-nav.active {
+    display: block;
+  }
+  
+  .mobile-nav-content {
+    padding: 10px 0;
+  }
+  
+  .mobile-nav-item {
+    display: block;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  
+  .mobile-nav-item:last-child {
+    border-bottom: none;
+  }
+  
+  .mobile-nav-item i {
+    width: 24px;
+    margin-right: 10px;
+    color: #3498db;
+  }
+  
+  .mobile-main {
+    margin-top: 60px; /* 给固定头部留空间 */
+    padding: 15px;
+    min-height: calc(100vh - 120px);
+  }
+  
+  .mobile-footer {
+    background: #f8f9fa;
+    padding: 15px;
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+  }
+  
+  /* 响应式调整 */
+  @media (min-width: 769px) {
+    .mobile-header, .mobile-footer {
+      display: none;
+    }
+    
+    .mobile-main {
+      margin-top: 0;
+    }
+  }
+  </style>
 </body>
 </html>
