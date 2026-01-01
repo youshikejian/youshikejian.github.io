@@ -926,3 +926,225 @@ body {
   background: linear-gradient(135deg, #2196F3, #1976D2);
 }
 */
+
+/* ==============================================
+   移动端响应式设计修复
+   ============================================== */
+
+/* 基础移动端重置 */
+@media (max-width: 767px) {
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  body {
+    min-width: 320px;
+    position: relative;
+  }
+  
+  /* 修复容器溢出 */
+  .main-content,
+  .grade-section,
+  .course-card,
+  .course-detail,
+  .download-section,
+  .course-info-section {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* 网格布局调整 */
+  .subjects-grid,
+  .courses-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    padding: 10px !important;
+  }
+  
+  /* 课程卡片调整 */
+  .subject-card,
+  .course-card {
+    width: 100% !important;
+    margin: 5px 0 !important;
+    padding: 10px !important;
+  }
+  
+  /* 标题调整 */
+  h1, h2, h3 {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    word-wrap: break-word;
+  }
+  
+  .section-header h2 {
+    font-size: 20px !important;
+  }
+  
+  /* 按钮调整 */
+  .view-btn,
+  .decrypt-btn,
+  .nav-btn {
+    padding: 12px 15px !important;
+    font-size: 14px !important;
+    min-height: 44px; /* 最小触摸尺寸 */
+  }
+  
+  /* 下载按钮在手机上垂直排列 */
+  .download-buttons {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .download-btn-item {
+    margin-bottom: 10px !important;
+  }
+  
+  /* 课程详情页调整 */
+  .course-detail {
+    padding: 15px !important;
+  }
+  
+  .course-title-area h1 {
+    font-size: 22px !important;
+  }
+  
+  /* 信息网格调整为垂直 */
+  .info-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* 导航栏调整 */
+  .site-header {
+    padding: 10px 15px !important;
+    height: auto !important;
+  }
+  
+  .site-logo {
+    font-size: 18px !important;
+  }
+  
+  /* 页脚调整 */
+  .site-footer {
+    padding: 15px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* 超小屏幕设备（手机竖屏） */
+@media (max-width: 480px) {
+  .subjects-grid,
+  .courses-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .subject-card,
+  .course-card {
+    margin: 5px 0 !important;
+  }
+  
+  .section-header h2 {
+    font-size: 18px !important;
+  }
+  
+  .grade-description {
+    font-size: 14px !important;
+  }
+  
+  /* 加密容器调整 */
+  .encrypt-container {
+    margin: 30px auto !important;
+    padding: 20px !important;
+  }
+  
+  .encrypt-icon {
+    font-size: 36px !important;
+  }
+  
+  .encrypt-title {
+    font-size: 18px !important;
+  }
+}
+
+/* 平板设备 */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .subjects-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  .courses-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+  /* 增大触摸目标 */
+  a, button, .subject-card, .course-card {
+    min-height: 44px;
+  }
+  
+  /* 移除悬停效果，改为点击效果 */
+  .subject-card:hover,
+  .course-card:hover,
+  .download-btn-item:hover {
+    transform: none !important;
+  }
+  
+  .subject-card:active,
+  .course-card:active,
+  .download-btn-item:active {
+    transform: scale(0.98) !important;
+    opacity: 0.9;
+  }
+  
+  /* 按钮点击反馈 */
+  .view-btn:active,
+  .decrypt-btn:active,
+  .nav-btn:active {
+    transform: scale(0.95) !important;
+  }
+}
+
+/* 修复iOS Safari特定问题 */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari特定修复 */
+  .main-content {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  input, textarea {
+    font-size: 16px !important; /* 防止iOS缩放 */
+  }
+}
+
+/* 防止长单词溢出 */
+h1, h2, h3, p, span, a {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* 修复图片溢出 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 修复表格溢出 */
+table {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto;
+  display: block;
+}
+
+/* 修复代码块溢出 */
+pre, code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-width: 100%;
+  overflow-x: auto;
+}

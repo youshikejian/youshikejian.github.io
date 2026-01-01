@@ -10,18 +10,289 @@
 <body>
   <header class="site-header">
   <div class="header-container">
-    <div class="site-title">
-      <h1>幼儿园课件资源中心</h1>
-      
-        <p class="subtitle">专业、系统、有趣的教学资源</p>
-      
+    <!-- 移动端菜单按钮 -->
+    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="菜单">
+      <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- 网站Logo -->
+    <div class="site-logo">
+      <a href="/">
+        <i class="fas fa-school"></i>
+        <span>幼儿园课件资源中心</span>
+      </a>
     </div>
-    <div class="header-actions">
-      <a href="/about" class="btn-link">关于我们</a>
-      <a href="/contact" class="btn-link">联系我们</a>
-    </div>
+    
+    <!-- 桌面导航 -->
+    <nav class="site-nav desktop-nav">
+      <a href="/" class="nav-link">
+        <i class="fas fa-home"></i> 首页
+      </a>
+      
+      <!-- 快速跳转链接 -->
+      <div class="nav-dropdown">
+        <a href="javascript:void(0)" class="nav-link">
+          <i class="fas fa-graduation-cap"></i> 课程分类
+        </a>
+        <div class="dropdown-menu">
+          <a href="/categories/小班" class="dropdown-item">
+            <i class="fas fa-child"></i> 小班课程
+          </a>
+          <a href="/categories/中班" class="dropdown-item">
+            <i class="fas fa-user-graduate"></i> 中班课程
+          </a>
+          <a href="/categories/大班" class="dropdown-item">
+            <i class="fas fa-user-tie"></i> 大班课程
+          </a>
+          
+          
+          <a href="/categories/其他课程" class="dropdown-item">
+            <i class="fas fa-ellipsis-h"></i> 其他课程
+          </a>
+          
+        </div>
+      </div>
+      
+      <a href="/about" class="nav-link">
+        <i class="fas fa-info-circle"></i> 关于我们
+      </a>
+    </nav>
+    
+    <!-- 移动端导航菜单（初始隐藏） -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+    <nav class="mobile-nav" id="mobile-nav">
+      <button class="mobile-close-btn" id="mobile-close-btn">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <div class="mobile-nav-header">
+        <i class="fas fa-school"></i>
+        <h3>幼儿园课件资源中心</h3>
+      </div>
+      
+      <div class="mobile-nav-links">
+        <a href="/" class="mobile-nav-link">
+          <i class="fas fa-home"></i> 首页
+        </a>
+        
+        <div class="mobile-nav-section">
+          <h4><i class="fas fa-graduation-cap"></i> 课程分类</h4>
+          <a href="/categories/小班" class="mobile-nav-link">
+            <i class="fas fa-child"></i> 小班课程
+          </a>
+          <a href="/categories/中班" class="mobile-nav-link">
+            <i class="fas fa-user-graduate"></i> 中班课程
+          </a>
+          <a href="/categories/大班" class="mobile-nav-link">
+            <i class="fas fa-user-tie"></i> 大班课程
+          </a>
+          
+          
+          <a href="/categories/其他课程" class="mobile-nav-link">
+            <i class="fas fa-ellipsis-h"></i> 其他课程
+          </a>
+          
+        </div>
+        
+        <a href="/about" class="mobile-nav-link">
+          <i class="fas fa-info-circle"></i> 关于我们
+        </a>
+      </div>
+    </nav>
   </div>
 </header>
+
+<!-- 移动端导航脚本 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileCloseBtn = document.getElementById('mobile-close-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+  const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+  
+  // 打开移动菜单
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', function() {
+      mobileNav.classList.add('active');
+      mobileNavOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  }
+  
+  // 关闭移动菜单
+  const closeMobileMenu = function() {
+    mobileNav.classList.remove('active');
+    mobileNavOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+  
+  if (mobileCloseBtn) {
+    mobileCloseBtn.addEventListener('click', closeMobileMenu);
+  }
+  
+  if (mobileNavOverlay) {
+    mobileNavOverlay.addEventListener('click', closeMobileMenu);
+  }
+  
+  // 点击移动菜单链接也关闭菜单
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', closeMobileMenu);
+  });
+  
+  // 防止在移动端出现双指缩放
+  document.addEventListener('touchstart', function(event) {
+    if (event.touches.length > 1) {
+      event.preventDefault();
+    }
+  }, { passive: false });
+  
+  // 防止在iOS上双击缩放
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function(event) {
+    const now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, false);
+});
+</script>
+
+<style>
+/* 移动端导航样式 */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100%;
+  background: white;
+  z-index: 1000;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  transition: left 0.3s ease;
+  overflow-y: auto;
+}
+
+.mobile-nav.active {
+  left: 0;
+}
+
+.mobile-nav-overlay.active {
+  display: block;
+}
+
+.mobile-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+}
+
+.mobile-nav-header {
+  padding: 30px 20px 20px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+.mobile-nav-header i {
+  font-size: 40px;
+  color: #3498db;
+  margin-bottom: 10px;
+}
+
+.mobile-nav-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.mobile-nav-links {
+  padding: 20px;
+}
+
+.mobile-nav-section {
+  margin-bottom: 20px;
+}
+
+.mobile-nav-section h4 {
+  margin: 0 0 10px 0;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 12px 10px;
+  color: #333;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  transition: background 0.2s;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:active {
+  background: #f5f5f5;
+}
+
+.mobile-nav-link i {
+  width: 24px;
+  margin-right: 10px;
+  color: #3498db;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+  
+  .desktop-nav {
+    display: none;
+  }
+  
+  .mobile-nav {
+    display: block;
+  }
+  
+  .site-header {
+    padding: 10px 15px !important;
+  }
+  
+  .header-container {
+    justify-content: space-between;
+  }
+}
+</style>
 
 
   <main class="main-content">
@@ -36,19 +307,19 @@
     <div class="courses-grid">
       
         <article class="course-card">
-          <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC4%E8%AF%BE-%E6%95%85%E4%BA%8B%E8%AE%B2%E8%BF%B0/" class="course-image-link">
+          <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC1%E8%AF%BE-%E5%9F%BA%E7%A1%80%E8%AE%A4%E7%9F%A5/" class="course-image-link">
             
-              <img src="/images/courses/语言表达-小班-4.jpg" alt="语言表达小班第4课：故事讲述" class="course-image">
+              <img src="/images/courses/语言表达-小班-1.jpg" alt="语言表达小班第1课：基础认知" class="course-image">
             
           </a>
           
           <div class="course-info">
             <h3 class="course-title">
-              <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC4%E8%AF%BE-%E6%95%85%E4%BA%8B%E8%AE%B2%E8%BF%B0/">语言表达小班第4课：故事讲述</a>
+              <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC1%E8%AF%BE-%E5%9F%BA%E7%A1%80%E8%AE%A4%E7%9F%A5/">语言表达小班第1课：基础认知</a>
             </h3>
             
             
-              <p class="course-description">通过故事学习道理</p>
+              <p class="course-description">学习基础概念和认知能力</p>
             
             
             <div class="course-meta">
@@ -64,7 +335,7 @@
             </div>
             
             <div class="course-action-box">
-              <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC4%E8%AF%BE-%E6%95%85%E4%BA%8B%E8%AE%B2%E8%BF%B0/" class="view-btn">
+              <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC1%E8%AF%BE-%E5%9F%BA%E7%A1%80%E8%AE%A4%E7%9F%A5/" class="view-btn">
                 <i class="fas fa-eye"></i> 查看详情
               </a>
             </div>
@@ -144,6 +415,42 @@
         </article>
       
         <article class="course-card">
+          <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC4%E8%AF%BE-%E6%95%85%E4%BA%8B%E8%AE%B2%E8%BF%B0/" class="course-image-link">
+            
+              <img src="/images/courses/语言表达-小班-4.jpg" alt="语言表达小班第4课：故事讲述" class="course-image">
+            
+          </a>
+          
+          <div class="course-info">
+            <h3 class="course-title">
+              <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC4%E8%AF%BE-%E6%95%85%E4%BA%8B%E8%AE%B2%E8%BF%B0/">语言表达小班第4课：故事讲述</a>
+            </h3>
+            
+            
+              <p class="course-description">通过故事学习道理</p>
+            
+            
+            <div class="course-meta">
+              
+                <span><i class="far fa-calendar"></i> 2026-01-01</span>
+              
+              
+                <span><i class="far fa-clock"></i> 30分钟</span>
+              
+              
+                <span><i class="far fa-file"></i> 25页</span>
+              
+            </div>
+            
+            <div class="course-action-box">
+              <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC4%E8%AF%BE-%E6%95%85%E4%BA%8B%E8%AE%B2%E8%BF%B0/" class="view-btn">
+                <i class="fas fa-eye"></i> 查看详情
+              </a>
+            </div>
+          </div>
+        </article>
+      
+        <article class="course-card">
           <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC5%E8%AF%BE-%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A0/" class="course-image-link">
             
               <img src="/images/courses/语言表达-小班-5.jpg" alt="语言表达小班第5课：综合练习" class="course-image">
@@ -173,42 +480,6 @@
             
             <div class="course-action-box">
               <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC5%E8%AF%BE-%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A0/" class="view-btn">
-                <i class="fas fa-eye"></i> 查看详情
-              </a>
-            </div>
-          </div>
-        </article>
-      
-        <article class="course-card">
-          <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC1%E8%AF%BE-%E5%9F%BA%E7%A1%80%E8%AE%A4%E7%9F%A5/" class="course-image-link">
-            
-              <img src="/images/courses/语言表达-小班-1.jpg" alt="语言表达小班第1课：基础认知" class="course-image">
-            
-          </a>
-          
-          <div class="course-info">
-            <h3 class="course-title">
-              <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC1%E8%AF%BE-%E5%9F%BA%E7%A1%80%E8%AE%A4%E7%9F%A5/">语言表达小班第1课：基础认知</a>
-            </h3>
-            
-            
-              <p class="course-description">学习基础概念和认知能力</p>
-            
-            
-            <div class="course-meta">
-              
-                <span><i class="far fa-calendar"></i> 2026-01-01</span>
-              
-              
-                <span><i class="far fa-clock"></i> 30分钟</span>
-              
-              
-                <span><i class="far fa-file"></i> 25页</span>
-              
-            </div>
-            
-            <div class="course-action-box">
-              <a href="/2026/01/01/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE/%E5%B0%8F%E7%8F%AD/%E8%AF%AD%E8%A8%80%E8%A1%A8%E8%BE%BE-%E5%B0%8F%E7%8F%AD-%E7%AC%AC1%E8%AF%BE-%E5%9F%BA%E7%A1%80%E8%AE%A4%E7%9F%A5/" class="view-btn">
                 <i class="fas fa-eye"></i> 查看详情
               </a>
             </div>
