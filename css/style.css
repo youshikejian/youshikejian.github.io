@@ -769,3 +769,160 @@ body {
     font-size: 24px;
   }
 }
+
+/* === 课程列表页查看详情按钮样式 === */
+
+.course-action-box {
+  margin-top: 20px;
+  padding: 15px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+.view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 25px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.2);
+  width: 100%;
+  max-width: 200px;
+}
+
+.view-btn:hover {
+  background: linear-gradient(135deg, #2980b9, #1c6ea4);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.view-btn:active {
+  transform: translateY(0);
+}
+
+/* === 课程详情页下载区域样式（与信息框统一风格） === */
+
+.download-section {
+  margin-top: 40px;
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #e9ecef;
+}
+
+.download-section h3 {
+  font-size: 20px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.download-section h3 i {
+  color: #3498db;
+}
+
+.download-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.download-btn-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.download-btn-item:hover {
+  border-color: #3498db;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.download-btn-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+}
+
+.ppt-download .download-btn-icon {
+  background: linear-gradient(135deg, #FF5722, #E64A19);
+}
+
+.pdf-download .download-btn-icon {
+  background: linear-gradient(135deg, #F44336, #D32F2F);
+}
+
+//.video-download .download-btn-icon {
+//  background: linear-gradient(135deg, #2196F3, #1976D2);
+}
+
+.download-btn-content {
+  flex: 1;
+}
+
+.download-btn-content strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #2c3e50;
+}
+
+.download-btn-content p {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin: 0;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .course-action-box {
+    padding: 12px;
+  }
+  
+  .view-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+  
+  .download-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .download-btn-item {
+    padding: 15px;
+  }
+}
+
+/* === 注释掉的视频下载按钮样式 === */
+/*
+.video-download .download-btn-icon {
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+}
+*/
