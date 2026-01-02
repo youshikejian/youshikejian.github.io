@@ -792,3 +792,102 @@ html, body {
     height: 160px;
   }
 }
+
+/* ========== 布局修复补充 ========== */
+/* 确保布局容器正常工作 */
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px 0;
+}
+
+/* 确保所有页面都有正确的边距 */
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 课程导航按钮样式修复 */
+.course-navigation {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  text-align: center;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 25px;
+  background: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.home-btn {
+  background: #2ecc71;
+}
+
+.home-btn:hover {
+  background: #27ae60;
+}
+
+.back-btn {
+  background: #95a5a6;
+}
+
+.back-btn:hover {
+  background: #7f8c8d;
+}
+
+/* ========== 四栏布局优化 ========== */
+/* 保持四栏间距均匀 */
+.grade-section {
+  margin-bottom: 40px; /* 适当减小间距，因为只有四栏 */
+}
+
+/* 确保其他课程栏目的样式正常 */
+.other-class {
+  margin-top: 20px;
+}
+
+/* 四栏布局的响应式调整 */
+@media (max-width: 1024px) {
+  .subjects-grid {
+    grid-template-columns: repeat(4, 1fr); /* 平板设备一行4个 */
+  }
+}
+
+@media (max-width: 768px) {
+  .subjects-grid {
+    grid-template-columns: repeat(2, 1fr); /* 手机端一行2个 */
+  }
+}
+
+@media (max-width: 480px) {
+  .subjects-grid {
+    grid-template-columns: 1fr; /* 小手机一行1个 */
+  }
+}
