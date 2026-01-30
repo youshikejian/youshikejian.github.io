@@ -273,7 +273,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 0; /* 去掉间隙，让输入框和按钮紧贴 */
             max-width: 600px;
             margin: 0 auto;
         }
@@ -287,6 +287,7 @@
             border-radius: 10px 0 0 10px;
             outline: none;
             transition: all 0.3s;
+            box-sizing: border-box;
         }
 
         #search-input:focus {
@@ -305,6 +306,8 @@
             cursor: pointer;
             font-weight: bold;
             transition: background 0.3s;
+            box-sizing: border-box;
+            line-height: 48px; /* 桌面端文字垂直居中 */
         }
 
         #search-btn:hover { background: #4662d9; }
@@ -407,11 +410,40 @@
         }
         .no-result h3 { color: #333; margin-bottom: 10px; }
 
-        /* 手机端适配 */
+        /* 🌟 手机端适配 (修复搜索框对齐) */
         @media (max-width: 768px) {
-            #search-input { font-size: 0.9rem; height: 40px; }
-            #search-btn { padding: 0 20px; font-size: 0.9rem; }
-            .ad-slider-container { margin-left: -10px; margin-right: -10px; width: calc(100% + 20px); border-radius: 0; }
+            /* 搜索框容器调整宽度 */
+            .search-box-wrapper {
+                width: 95%; /* 手机端占满一点 */
+            }
+            
+            /* 搜索输入框 */
+            #search-input {
+                height: 44px !important; /* 🔥 强制高度 */
+                line-height: 1.5;
+                font-size: 16px; /* 🔥 防止iOS自动放大输入框 */
+                border-radius: 8px 0 0 8px; /* 左侧圆角 */
+                padding: 0 12px; /* 内边距减小一点 */
+            }
+            
+            /* 搜索按钮 */
+            #search-btn {
+                height: 44px !important; /* 🔥 强制高度与输入框完全一致 */
+                line-height: 44px; /* 🔥 文字垂直居中 */
+                padding: 0 15px;
+                font-size: 15px;
+                border-radius: 0 8px 8px 0; /* 右侧圆角 */
+                box-sizing: border-box;
+                vertical-align: middle;
+            }
+            
+            /* 广告轮播样式 */
+            .ad-slider-container { 
+                margin-left: -20px; 
+                margin-right: -20px; 
+                width: calc(100% + 40px); 
+                border-radius: 0; 
+            }
         }
     </style>
 </head>
@@ -562,7 +594,7 @@
                 const html = `
                     <div class="post-card">
                         <div class="card-img-wrapper">
-                            <img src="${imgUrl}" alt="${post.title}">
+                            <img src="${imgUrl}" alt="${post.title}" loading="lazy">
                         </div>
                         <div class="card-body">
                             <div class="card-title">
