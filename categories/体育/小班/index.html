@@ -220,15 +220,12 @@
     <header class="site-header">
     <div class="header-content">
         <div class="logo">
-            <!-- 🌟 修改 1：logo 点击跳转到 yekjw.top -->
-            <a target="_blank" rel="noopener" href="https://yekjw.top/">幼儿园课件资源中心</a>
+            <a target="_blank" rel="noopener" href="https://yekjw.top/" onclick="handleLinkClick(event)">幼儿园课件资源中心</a>
             <span class="site-slogan">已服务30w+幼师</span>
         </div>
         <div class="header-buttons">
-            <!-- 🌟 修改 2：首页按钮跳转到 yekjw.top -->
-            <a target="_blank" rel="noopener" href="https://yekjw.top/">🏠 首页</a>
+            <a target="_blank" rel="noopener" href="https://yekjw.top/" onclick="handleLinkClick(event)">🏠 首页</a>
             
-            <!-- 搜索课件按钮指向当前的搜索页（也就是首页 /） -->
             <a href="/" class="search-btn">🔍 搜索课件</a>
             <a href="/admin" class="login-btn">🔐 登录</a>
             <a href="/about" style="margin-left: 15px;">关于本站</a>
@@ -236,6 +233,13 @@
         </div>
     </div>
 </header>
+
+<script>
+function handleLinkClick(e) {
+    e.preventDefault();
+    window.location.href = e.currentTarget.href;
+}
+</script>
 
 
     <!-- 页面内容 -->

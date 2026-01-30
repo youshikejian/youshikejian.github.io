@@ -220,15 +220,12 @@
     <header class="site-header">
     <div class="header-content">
         <div class="logo">
-            <!-- 🌟 修改 1：logo 点击跳转到 yekjw.top -->
-            <a target="_blank" rel="noopener" href="https://yekjw.top/">幼儿园课件资源中心</a>
+            <a target="_blank" rel="noopener" href="https://yekjw.top/" onclick="handleLinkClick(event)">幼儿园课件资源中心</a>
             <span class="site-slogan">已服务30w+幼师</span>
         </div>
         <div class="header-buttons">
-            <!-- 🌟 修改 2：首页按钮跳转到 yekjw.top -->
-            <a target="_blank" rel="noopener" href="https://yekjw.top/">🏠 首页</a>
+            <a target="_blank" rel="noopener" href="https://yekjw.top/" onclick="handleLinkClick(event)">🏠 首页</a>
             
-            <!-- 搜索课件按钮指向当前的搜索页（也就是首页 /） -->
             <a href="/" class="search-btn">🔍 搜索课件</a>
             <a href="/admin" class="login-btn">🔐 登录</a>
             <a href="/about" style="margin-left: 15px;">关于本站</a>
@@ -236,6 +233,13 @@
         </div>
     </div>
 </header>
+
+<script>
+function handleLinkClick(e) {
+    e.preventDefault();
+    window.location.href = e.currentTarget.href;
+}
+</script>
 
 
     <!-- 页面内容 -->
@@ -262,8 +266,35 @@
         /* 封面图样式 */
         .post-cover { width: 100%; height: auto; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: block; object-fit: contain; }
 
-        .article-content { line-height: 1.8; color: #444; font-size: 1.1rem; }
-        .article-content h2 { color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; }
+        /* ========== 🌟 终极修复：解决 h1 标题距离上方过远的问题 ========== */
+
+        /* 1. 关键修复：强制取消 layout.ejs 中 h1 的 100px 上边距 */
+        /* 这个规则会覆盖全局样式，只影响文章卡片内的 h1 */
+        .post-card h1 {
+            margin-top: 0 !important;     /* 🔥 强制覆盖 layout.ejs 的 100px */
+            margin-bottom: 15px !important; /* 标题下方的间距 */
+        }
+
+        /* 2. 微调：减小日期/浏览量的底部边距 */
+        .post-card .post-meta {
+            margin-bottom: 15px !important;
+        }
+
+        /* 3. 紧凑内容区域 */
+        .post-card .article-content {
+            margin-top: 5px !important; /* 进一步缩小，因为 h1 已经处理好了 */
+        }
+
+        /* 4. 针对 ceshi7.py 生成的 article-header */
+        .article-header {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+
+        /* 5. 调整分隔线 */
+        .divider {
+            margin: 10px 0 !important;
+        }
 
         /* ========== 🌟 核心修复一：文章宽度加宽 (1300px) ========== */
         article, .post-content, .article-entry, .markdown-body, 
@@ -373,14 +404,13 @@
         .btn-home { background-color: #fff7e6; color: #d46b08; border: 1px solid #ffd591; }
         .btn-home:hover { background-color: #ffe7ba; color: #ad4e00; border-color: #ffa940; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(250, 219, 20, 0.2); }
 
-            /* ========== 🌟 手机端内容区域加宽 ========== */
+            /* ========== 手机端内容区域加宽 ========== */
     @media (max-width: 768px) {
         /* 🌟 文章卡片内边距缩小：从 40px 减小到 10px，内容瞬间变宽 */
         .post-card {
             padding: 20px 10px !important;
         }
-
-        /* 🌟 如果觉得还不够宽，可以把上面的 padding: 20px 10px 改成 padding: 10px 5px; */}
+    }
     </style>
 </head>
 <body>
@@ -404,7 +434,8 @@
 
             <!-- 🌟 正文内容区域 -->
             <div class="article-content">
-                <!-- 删除了原来的分类链接计算逻辑 -->
+                
+
                 <div class="article-header">
 
 <h1>汉字里的天气</h1>
@@ -668,11 +699,10 @@
             <!-- 【区域二：底部导航返回栏 - 文章外部】 -->
             <!-- ======================================================= -->
             <div class="article-footer">
-                <!-- 🌟 修改 1：第一个按钮改为返回搜索页（即首页） -->
-                <a href="/" class="btn btn-back">🔍 返回搜索</a>
                 
-                <!-- 🌟 修改 2：第二个按钮跳转到 yekjw.top -->
-                <a target="_blank" rel="noopener" href="https://yekjw.top/" class="btn btn-home">🏠 返回首页</a>
+                
+                <a href="/categories/语言/大班/" class="btn btn-back">返回 大班语言 列表</a>
+                <a href="/" class="btn btn-home">返回首页</a>
             </div>
 
         </div>

@@ -220,15 +220,12 @@
     <header class="site-header">
     <div class="header-content">
         <div class="logo">
-            <!-- 🌟 修改 1：logo 点击跳转到 yekjw.top -->
-            <a target="_blank" rel="noopener" href="https://yekjw.top/">幼儿园课件资源中心</a>
+            <a target="_blank" rel="noopener" href="https://yekjw.top/" onclick="handleLinkClick(event)">幼儿园课件资源中心</a>
             <span class="site-slogan">已服务30w+幼师</span>
         </div>
         <div class="header-buttons">
-            <!-- 🌟 修改 2：首页按钮跳转到 yekjw.top -->
-            <a target="_blank" rel="noopener" href="https://yekjw.top/">🏠 首页</a>
+            <a target="_blank" rel="noopener" href="https://yekjw.top/" onclick="handleLinkClick(event)">🏠 首页</a>
             
-            <!-- 搜索课件按钮指向当前的搜索页（也就是首页 /） -->
             <a href="/" class="search-btn">🔍 搜索课件</a>
             <a href="/admin" class="login-btn">🔐 登录</a>
             <a href="/about" style="margin-left: 15px;">关于本站</a>
@@ -236,6 +233,13 @@
         </div>
     </div>
 </header>
+
+<script>
+function handleLinkClick(e) {
+    e.preventDefault();
+    window.location.href = e.currentTarget.href;
+}
+</script>
 
 
     <!-- 页面内容 -->
@@ -311,7 +315,7 @@
 
 <!-- 分类页逻辑脚本 (完全保留原样) -->
 <script>
-    const allPosts = [{"title":"基础版 消防教育（新规版） 小中","path":"/categories/安全/基础版 消防教育（新规版） 小中_中班.html","views":19298,"date":"2026-01-09","cover_img":"https://yekjw.oss-cn-qingdao.aliyuncs.com/blog_images/基础版_消防安全教育（新规版）_健康_小中大班/ppt/20260110010826_ppt_cover_wm.jpg","categories":["安全","中班"]},{"title":"基础版 消防教育（新规版） 小中","path":"/categories/安全/基础版 消防教育（新规版） 小中_大班.html","views":19298,"date":"2026-01-09","cover_img":"https://yekjw.oss-cn-qingdao.aliyuncs.com/blog_images/基础版_消防安全教育（新规版）_健康_小中大班/ppt/20260110010826_ppt_cover_wm.jpg","categories":["安全","大班"]},{"title":"秋季第一课","path":"/categories/安全/秋季第一课_大班.html","views":19940,"date":"2026-01-09","cover_img":"https://yekjw.oss-cn-qingdao.aliyuncs.com/blog_images/秋季安全第一课_健康_大班/ppt/20260110011605_ppt_cover_wm.jpg","categories":["安全","大班"]},{"title":"基础版 消防教育（新规版） 小中","path":"/categories/安全/基础版 消防教育（新规版） 小中_小班.html","views":19298,"date":"2026-01-09","cover_img":"https://yekjw.oss-cn-qingdao.aliyuncs.com/blog_images/基础版_消防安全教育（新规版）_健康_小中大班/ppt/20260110010826_ppt_cover_wm.jpg","categories":["安全","小班"]}];
+    const allPosts = [{"title":"基础版 消防教育（新规版） 小中","path":"/categories/安全/基础版 消防教育（新规版） 小中_中班.html","views":19298,"date":"2026-01-09","cover_img":"https://yekjw.oss-cn-qingdao.aliyuncs.com/blog_images/基础版_消防安全教育（新规版）_健康_小中大班/ppt/20260110010826_ppt_cover_wm.jpg","categories":["安全","中班"]},{"title":"基础版 消防教育（新规版） 小中","path":"/categories/安全/基础版 消防教育（新规版） 小中_小班.html","views":19298,"date":"2026-01-09","cover_img":"https://yekjw.oss-cn-qingdao.aliyuncs.com/blog_images/基础版_消防安全教育（新规版）_健康_小中大班/ppt/20260110010826_ppt_cover_wm.jpg","categories":["安全","小班"]}];
 
     let currentPage = 1;
     const itemsPerPage = 20; 
