@@ -275,6 +275,7 @@ function handleLinkClick(e) {
         justify-content: center;
         align-items: center;
         min-height: 120px;
+        cursor: pointer; /* 🌟 增加手型光标 */
     }
 
     .resource-btn:hover {
@@ -296,9 +297,7 @@ function handleLinkClick(e) {
     .page-header {
        margin-top: -30px !important; /* 整体向上提拉 */
     }
-    /* ========== 新增：安全课程子选项样式 ========== */
-
-/* ========== 优化后的安全课程子选项样式 ========== */
+    /* ========== 优化后的安全课程子选项样式 ========== */
 
 /* 子选项容器 */
 .safety-options-container {
@@ -341,6 +340,7 @@ function handleLinkClick(e) {
     color: #d46b08; /* 深橙色文字 */
     
     transition: all 0.2s;
+    cursor: pointer; /* 🌟 增加手型光标 */
 }
 
 .sub-safety-btn:hover {
@@ -431,15 +431,16 @@ function handleLinkClick(e) {
 
     <!-- 2. 它的弹出框（同样放在按钮的**旁边**） -->
     <div id="safety-options" class="safety-options-container" style="display: none;">
-        <a href="/categories/安全/小班/" class="sub-safety-btn">
+        <!-- 🌟 修改：点击子按钮，自动搜索关键词 -->
+        <a onclick="quickRedirect('小班安全')" class="sub-safety-btn">
             <span class="sub-icon">🔵</span>
             <span class="sub-text">小班安全</span>
         </a>
-        <a href="/categories/安全/中班/" class="sub-safety-btn">
+        <a onclick="quickRedirect('中班安全')" class="sub-safety-btn">
             <span class="sub-icon">🟡</span>
             <span class="sub-text">中班安全</span>
         </a>
-        <a href="/categories/安全/大班/" class="sub-safety-btn">
+        <a onclick="quickRedirect('大班安全')" class="sub-safety-btn">
             <span class="sub-icon">🔴</span>
             <span class="sub-text">大班安全</span>
         </a>
@@ -452,69 +453,70 @@ function handleLinkClick(e) {
         <div class="btn-text">节日节气资料</div>
     </div>
 
-    <!-- 2. 它的弹出框（注意：在按钮的**旁边**，不是在里面） -->
+    <!-- 2. 它的弹出框 -->
     <div id="final-options" class="safety-options-container" style="display: none;">
-        <!-- 按钮1 -->
-        <a href="/categories/节日节气资料/节气/" class="sub-safety-btn">
+        <!-- 🌟 修改：点击子按钮，自动搜索关键词 -->
+        <a onclick="quickRedirect('节气课件')" class="sub-safety-btn">
             <span class="sub-icon">🧧</span>
             <span class="sub-text">节气课件资源</span>
         </a>
         <!-- 按钮2 -->
-        <a href="/categories/节日节气资料/节日/" class="sub-safety-btn">
+        <a onclick="quickRedirect('节日课件')" class="sub-safety-btn">
             <span class="sub-icon">🎂</span>
             <span class="sub-text">节日课件资源</span>
         </a>
         <!-- 按钮3 -->
-        <a href="/categories/节日节气资料/中国传统故事/" class="sub-safety-btn">
+        <a onclick="quickRedirect('中国传统故事')" class="sub-safety-btn">
             <span class="sub-icon">🎉</span>
             <span class="sub-text">中国传统节日故事绘本</span>
         </a>
     </div>
 
+    <!-- 🌟 修改：以下直接链接按钮，改为点击自动搜索 -->
     <!-- 期末汇报 -->
-    <a href="/categories/期末汇报/" class="resource-btn">
+    <a onclick="quickRedirect('期末汇报')" class="resource-btn">
         <div class="btn-icon">📑</div>
         <div class="btn-text">期末汇报</div>
     </a>
 
     <!-- 各种计划总结汇总 -->
-    <a href="/categories/各种计划总结汇总/" class="resource-btn">
+    <a onclick="quickRedirect('计划总结')" class="resource-btn">
         <div class="btn-icon">📝</div>
         <div class="btn-text">各种计划总结汇总</div>
     </a>
 
     <!-- 幼儿园观察记录 -->
-    <a href="/categories/幼儿园观察记录/" class="resource-btn">
+    <a onclick="quickRedirect('观察记录')" class="resource-btn">
         <div class="btn-icon">👀</div>
         <div class="btn-text">幼儿园观察记录</div>
     </a>
 
     <!-- 教育随笔 -->
-    <a href="/categories/教育随笔/" class="resource-btn">
+    <a onclick="quickRedirect('教育随笔')" class="resource-btn">
         <div class="btn-icon">✍️</div>
         <div class="btn-text">教育随笔</div>
     </a>
 
     <!-- 幼儿园评语寄语 -->
-    <a href="/categories/幼儿园评语寄语/" class="resource-btn">
+    <a onclick="quickRedirect('评语寄语')" class="resource-btn">
         <div class="btn-icon">💬</div>
         <div class="btn-text">幼儿园评语寄语</div>
     </a>
 
     <!-- 幼儿园家长会 -->
-    <a href="/categories/幼儿园家长会/" class="resource-btn">
+    <a onclick="quickRedirect('家长会')" class="resource-btn">
         <div class="btn-icon">👨‍👩‍👧</div>
         <div class="btn-text">幼儿园家长会</div>
     </a>
 
     <!-- 幼儿园助教方案 -->
-    <a href="/categories/幼儿园助教方案/" class="resource-btn">
+    <a onclick="quickRedirect('助教方案')" class="resource-btn">
         <div class="btn-icon">🤝</div>
         <div class="btn-text">幼儿园助教方案</div>
     </a>
 
     <!-- 幼儿园活动方案 -->
-    <a href="/categories/幼儿园活动方案/" class="resource-btn">
+    <a onclick="quickRedirect('活动方案')" class="resource-btn">
         <div class="btn-icon">🎈</div>
         <div class="btn-text">幼儿园活动方案</div>
     </a>
@@ -526,22 +528,28 @@ function handleLinkClick(e) {
 <!-- 删掉了旧的 <footer>，保持页面整洁 -->
 
     <!-- 脚本逻辑 -->
-<!-- 脚本逻辑（万能版） -->
 <script>
+    // 1. 原有的菜单切换逻辑
     function toggleMenu(id) {
         var contentDiv = document.getElementById(id);
-        
-        // 判断是否隐藏
         if (contentDiv.style.display === "none") {
-            contentDiv.style.display = ""; // 🌟 改为空字符串，让 CSS 控制是 flex 还是 grid
+            contentDiv.style.display = ""; 
         } else {
-            contentDiv.style.display = "none"; // 隐藏它
+            contentDiv.style.display = "none"; 
         }
     }
+
+    // 🌟 2. 新增：跳转搜索逻辑
+    // 作用：保存关键词，跳转首页，让首页自动执行搜索
+    function quickRedirect(keyword) {
+        // 将搜索词存入浏览器缓存 (sessionStorage)
+        // 这样跳转后，首页的代码就能读到这个词
+        sessionStorage.setItem('targetKeyword', keyword);
+        
+        // 跳转回首页
+        window.location.href = '/';
+    }
 </script>
-
-
-
 
         </div>
 
