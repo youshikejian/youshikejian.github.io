@@ -220,12 +220,17 @@
     <header class="site-header">
     <div class="header-content">
         <div class="logo">
-            <a href="/">幼儿园课件资源中心</a>
+            <!-- 🌟 修改 1：logo 点击跳转到 yekjw.top -->
+            <a target="_blank" rel="noopener" href="https://yekjw.top/">幼儿园课件资源中心</a>
             <span class="site-slogan">已服务30w+幼师</span>
         </div>
         <div class="header-buttons">
-            <a href="/">🏠 首页</a>
-            <a href="/search" class="search-btn">🔍 搜索课件</a>
+            <!-- 🌟 修改 2：首页按钮跳转到 yekjw.top -->
+            <a target="_blank" rel="noopener" href="https://yekjw.top/">🏠 首页</a>
+            
+            <!-- 搜索课件按钮指向当前的搜索页（也就是首页 /） -->
+            <a href="/" class="search-btn">🔍 搜索课件</a>
+            
             <a href="/about" style="margin-left: 15px;">关于本站</a>
             <a href="/contact">联系我</a>
         </div>
@@ -399,8 +404,7 @@
 
             <!-- 🌟 正文内容区域 -->
             <div class="article-content">
-                
-
+                <!-- 删除了原来的分类链接计算逻辑 -->
                 <div class="article-header">
 
 <h1>夏天的太阳</h1>
@@ -642,10 +646,11 @@
             <!-- 【区域二：底部导航返回栏 - 文章外部】 -->
             <!-- ======================================================= -->
             <div class="article-footer">
+                <!-- 🌟 修改 1：第一个按钮改为返回搜索页（即首页） -->
+                <a href="/" class="btn btn-back">🔍 返回搜索</a>
                 
-                
-                <a href="/categories/科学/小班/" class="btn btn-back">返回 小班科学 列表</a>
-                <a href="/" class="btn btn-home">返回首页</a>
+                <!-- 🌟 修改 2：第二个按钮跳转到 yekjw.top -->
+                <a target="_blank" rel="noopener" href="https://yekjw.top/" class="btn btn-home">🏠 返回首页</a>
             </div>
 
         </div>
