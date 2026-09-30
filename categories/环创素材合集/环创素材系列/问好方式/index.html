@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幼儿园课件资源中心</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* 主体内容 */
+        body { 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            background-color: #f4f6f8; 
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+            padding-top: 110px; /* 顶部留空，防止被固定头部遮挡 */
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        /* 顶部导航 - 🔥 强制蓝色背景 */
+        .site-header { 
+            background-color: #2c3e50 !important; /* 强制深蓝色 */
+            color: #fff !important;              /* 强制白色文字 */
+            padding: 10px 0; 
+            margin-bottom: 30px;
+            position: fixed;      
+            top: 0;
+            left: 0;
+            width: 100%;          
+            z-index: 9999;         /* 强制最高层级 */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        }
+        
+        .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* 标题样式 */
+        .logo { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2; }
+        .logo a { 
+            color: #fff !important;  /* 强制白色 */
+            text-decoration: none; 
+            font-size: 1.8rem; 
+            font-weight: bold; 
+        }
+        .site-slogan {
+            font-size: 0.9rem;       
+            color: #bdc3c7;          
+            margin-top: 2px;          
+            margin-left: 2px;         
+            font-weight: normal;
+        }
+
+        /* 按钮样式 */
+        .header-buttons a { 
+            color: #ecf0f1 !important; /* 强制浅灰白 */
+            text-decoration: none; 
+            margin-left: 20px; 
+            font-size: 0.9rem; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            padding: 5px 12px; 
+            border-radius: 4px; 
+        }
+
+        /* 搜索按钮 */
+        .header-buttons .search-btn {
+            background-color: #3498db !important;
+            color: #fff !important;
+        }
+        .header-buttons .search-btn:hover {
+            background-color: #2980b9 !important;
+        }
+
+
+        /* 顶部四个大方框 */
+        .top-boxes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 40px; }
+        .big-box { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 5px solid #3498db; }
+        .box-title { font-size: 1.4rem; font-weight: bold; color: #2c3e50; margin-bottom: 15px; text-align: center; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .box-content { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 10px; }
+        .box-link { flex: 0 0 calc(50% - 5px); text-decoration: none; color: #555; background: #f8f9fa; padding: 8px 12px; border-radius: 6px; font-size: 0.95rem; text-align: center; transition: all 0.2s; border: 1px solid #eee; }
+        .box-link:hover { background: #3498db; color: #fff; transform: translateY(-2px); box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3); }
+
+        /* 筛选按钮行 */
+        .filter-section { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 30px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+        .filter-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .filter-btn { padding: 8px 20px; background: #ecf0f1; border: none; border-radius: 20px; cursor: pointer; font-size: 1rem; color: #555; transition: 0.3s; }
+        .filter-btn:hover { background: #bdc3c7; }
+        .filter-btn.active { background: #e67e22; color: #fff; font-weight: bold; box-shadow: 0 4px 6px rgba(230, 126, 34, 0.3); }
+
+        /* 底部动态课件列表 */
+        .list-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 10px; }
+        .list-title { margin: 0; color: #2c3e50; }
+        
+        .posts-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        @media (max-width: 1024px) { .posts-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .posts-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .post-card { background: #fff; border: 1px solid #eee; border-radius: 8px; overflow: hidden; transition: 0.2s; display: flex; flex-direction: column; }
+        .post-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+        
+        /* 图片区域样式 */
+        .card-img-wrapper { width: 100%; height: 180px; overflow: hidden; background: #f9f9f9; display: flex; align-items: center; justify-content: center; }
+        .card-img-wrapper img { width: 100%; height: auto; max-height: 180px; object-fit: contain; transition: transform 0.5s; }
+        .post-card:hover .card-img-wrapper img { transform: scale(1.1); }
+
+        .card-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 1rem; font-weight: bold; margin-bottom: 10px; color: #2c3e50; line-height: 1.4; flex: 1; }
+        .card-title a { text-decoration: none; color: inherit; }
+        .card-meta { font-size: 0.8rem; color: #999; margin-top: auto; display: flex; justify-content: space-between; }
+        
+        /* 分页 */
+        .pagination { margin-top: 30px; text-align: center; }
+        .page-btn { padding: 10px 20px; background: #34495e; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; margin: 0 10px; }
+        .page-btn:disabled { background: #ccc; cursor: not-allowed; }
+        .page-info { font-size: 1rem; margin: 0 15px; color: #555; vertical-align: middle; }
+
+        /* 广告轮播图样式 */
+        .ad-slider-container {
+            position: relative;
+            margin-top: -30px;  /* 🌟 向上拉回 */
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            width: 100%; 
+        }
+        .ad-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain; 
+        }
+        .ad-slide { display: none; width: 100%; }
+        .fade { animation-name: fade; animation-duration: 1.5s; }
+        @keyframes fade { from {opacity: .4} to {opacity: 1} }
+
+        /* 手机端优化 */
+        @media (max-width: 768px) {
+            .header-content { padding: 0 10px; }
+            .header-buttons a { margin-top: 10px !important; font-size: 0.8rem; padding: 4px 8px; margin-left: 8px; white-space: nowrap; }
+            .ad-slider-container { margin-top: 10px !important; /* 🌟 改成 10px，继续往下调整 */border-radius: 0; margin-left: -20px; margin-right: -20px; width: calc(100% + 40px); }
+            .ad-img { height: auto !important; width: 100%; }
+            .top-boxes-grid { grid-template-columns: 1fr; gap: 15px; }
+            .box-content { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+            .filter-section { padding: 15px; text-align: left; overflow-x: auto; white-space: nowrap; }
+            .filter-bar { display: flex; gap: 8px; width: max-content; }
+            .posts-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .card-img-wrapper { height: 140px; }
+        }
+        @media (max-width: 480px) {
+            .card-title { font-size: 0.85rem; }
+            .card-img-wrapper { height: 120px; }
+        }
+
+        /* ========== 🌟 全局强力调整页面间距 (修正位置：移到了 style 标签里面) ========== */
+
+        /* 1. 修复首页筛选后的列表位置（大中小班分类列表） */
+        .list-header {
+            margin-top: 0 !important; /* 🔥 加大到 120px，强行推下去 */
+        }
+
+        /* 2. 修复“点击查看更多资源”页面的位置（这是一个独立页面） */
+        .page-title, 
+        h1, 
+        .archive-title {
+            margin-top: 100px !important; /* 🔥 针对资源页和文章页的标题增加上边距 */
+            display: block;
+        }
+
+        /* 3. 保险起见，给资源页的主要内容区也增加一点距离 */
+        .page-content,
+        .article-content {
+            margin-top: 50px !important;
+        }
+            /* ========== 🌟 强制页脚居中样式 (新增) ========== */
+    .site-footer {
+        width: 100%; /* 确保占满全屏宽度 */
+        text-align: center; /* 🌟 核心：强制内部所有文字和元素居中 */
+        background-color: #2c3e50; /* 深蓝背景 */
+        color: #ecf0f1; /* 浅灰文字 */
+        padding: 40px 0; /* 上下留白 */
+        margin-top: 60px; /* 距离上方内容 */
+        display: block; /* 确保是块级显示 */
+        border-top: 3px solid #3498db; /* 顶部蓝线 */
+    }
+
+    .footer-content {
+        max-width: 1200px; /* 内容最大宽度 */
+        margin: 0 auto; /* 🌟 核心：确保内容块在屏幕中间 */
+        padding: 0 20px; /* 左右留空 */
+    }
+
+    /* 链接样式 */
+    .footer-content a {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .footer-content a:hover {
+        color: #5dade2;
+        text-decoration: underline;
+    }
+
+    /* 手机端适配 */
+    @media (max-width: 768px) {
+        .site-footer { padding: 30px 0; }
+    }
+    /* 运行时间样式 */
+.site-runtime-container {
+    text-align: left; /* 左对齐（与备案号一致） */
+    font-size: 0.9rem;   /* 字体大小 */
+    color: #bdc3c7;      /* 浅灰白色 */
+    margin: 5px 0;       /* 上下间距 */
+}
+.runtime-icon { margin-right: 5px; }
+    </style>
+</script>
+<meta name="generator" content="Hexo 8.1.1"></head>
+<body>
+
+    <!-- 调用头部 -->
+    <header class="site-header">
+    <div class="header-content">
+        <div class="logo">
+            <a target="_blank" rel="noopener" href="https://yekjw.top/" onclick="handleLinkClick(event)">幼儿园课件资源中心</a>
+            <span class="site-slogan">已服务30w+幼师</span>
+        </div>
+        <div class="header-buttons">
+            <a target="_blank" rel="noopener" href="https://yekjw.top/" onclick="handleLinkClick(event)">🏠 首页</a>
+            
+            <a href="/" class="search-btn">🔍 搜索课件</a>
+            <a href="/admin" class="login-btn">🔐 登录</a>
+            <a href="/about" style="margin-left: 15px;">关于本站</a>
+            <a href="/contact">联系我</a>
+        </div>
+    </div>
+</header>
+
+<script>
+function handleLinkClick(e) {
+    e.preventDefault();
+    window.location.href = e.currentTarget.href;
+}
+</script>
+
+
+    <!-- 页面内容 -->
+    <div class="container">
+        <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跳转中...</title>
+    <style>
+        /* 简单的加载样式，防止页面空白 */
+        body { 
+            background-color: #f4f6f8; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            color: #666; 
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+        }
+        .redirect-box { text-align: center; }
+        .spinner { 
+            border: 4px solid #f3f3f3; 
+            border-top: 4px solid #3498db; 
+            border-radius: 50%; 
+            width: 40px; 
+            height: 40px; 
+            animation: spin 1s linear infinite; 
+            margin: 0 auto 15px; 
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+    <script>
+        // 🌟 核心逻辑：拦截所有分类目录访问
+        // Hexo 的 category.ejs 模板专门负责渲染 /categories/ 下的所有目录页
+        // 只要在这个页面加入跳转代码，就能禁止所有分类目录
+        
+        (function() {
+            console.log("检测到访问分类目录，正在重定向至首页...");
+            
+            // 1. 执行重定向到首页
+            window.location.href = '/';
+        })();
+    </script>
+</head>
+<body>
+    <div class="redirect-box">
+        <div class="spinner"></div>
+        <p>正在跳转至搜索首页...</p>
+    </div>
+</body>
+</html>
+
+        </div>
+
+    <!-- 🌟 网站页脚 -->
+    <footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-copyright">
+            Copyright © 2014-2026 幼儿课件网(<a href="https://yekjw.top" target="_blank">https://yekjw.top</a>) . All Rights Reserved
+        </div>
+        <div class="footer-notice">
+            申明：网站图片内容若涉及到版权侵权问题，请联系我们从网站删除！客服微信：ppt66368
+        </div>
+        <div class="footer-beian">
+            备案号：<a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">鲁ICP备08100281号</a>
+        </div>
+        <!-- 🌟 网站运行时间统计 -->
+        <div class="site-runtime-container">
+            <span class="runtime-icon">⏳</span>
+            本站已安全运行：
+            <span id="site-runtime">计算中...</span>
+        </div>
+        <!-- 🌟 总访客数统计 -->
+        <div class="site-visitor-container">
+            <span class="visitor-icon">👤</span>
+            
+            <span id="busuanzi_value_site_uv">10w+🔥</span>
+        </div>
+    </div>
+</footer>
+</script>
+</body>
+</html>
+<body>
+    <!-- 🌟 将运行时间JS移到这里（DOM加载后执行） -->
+    <script>
+        function updateRuntime() {
+            // 🔴【重要】请在这里修改您的建站日期（格式：年/月/日 时:分:秒）
+            var startTime = new Date('2014/04/04 09:05:40'); 
+            
+            // 获取当前时间
+            var now = new Date();
+            
+            // 计算时间差（毫秒）
+            var difference = now - startTime;
+            
+            // 计算天数、小时、分钟、秒
+            var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+            var minutes = Math.floor((difference / (1000 * 60)) % 60);
+            var seconds = Math.floor((difference / 1000) % 60);
+            
+            // 拼接字符串
+            var result = days + "天" + 
+                         hours + "小时" + 
+                         minutes + "分钟" + 
+                         seconds + "秒";
+            
+            // 更新网页显示
+            document.getElementById('site-runtime').innerHTML = result;
+        }
+
+        // 立即执行一次，避免加载时有延迟
+        updateRuntime();
+        
+        // 每隔 1 秒刷新一次
+        setInterval(updateRuntime, 1000);
+    </script>
+</body>
+
+
+</body>
+</html>
