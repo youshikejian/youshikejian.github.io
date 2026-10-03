@@ -521,6 +521,26 @@ function handleLinkClick(e) {
     }
 
     // 5. 执行搜索核心逻辑
+    // 🌟 匹配算法：支持整词、空格分词(AND)、中文两字分词兜底
+    // 解决“小班语言”搜不到“语言小班/语言科学小班”这类语序不同的问题
+    function matchesKeyword(text, keyword) {
+        // 1) 整词包含（原有逻辑）
+        if (text.includes(keyword)) return true;
+
+        // 2) 空格分词：多个词必须全部出现（如“小班 语言 认识”）
+        const tokens = keyword.split(/\s+/).filter(Boolean);
+        if (tokens.length > 1 && tokens.every(t => text.includes(t))) return true;
+
+        // 3) 中文长词兜底：按两字切分，全部出现即命中
+        //    “小班语言” → [小班, 语言]，“拔萝卜-语言社会小班”也能命中
+        if (/^[\u4e00-\u9fa5]+$/.test(keyword) && keyword.length >= 4 && keyword.length % 2 === 0) {
+            const grams = [];
+            for (let i = 0; i < keyword.length; i += 2) grams.push(keyword.slice(i, i + 2));
+            if (grams.length > 1 && grams.every(g => text.includes(g))) return true;
+        }
+        return false;
+    }
+
     function performSearch() {
         const keyword = document.getElementById('search-input').value.trim().toLowerCase();
         const container = document.getElementById('posts-container');
@@ -537,11 +557,10 @@ function handleLinkClick(e) {
         hotKeywords.style.display = 'none'; 
         header.style.display = 'flex';
 
-        // 开始筛选
+        // 开始筛选：标题 + 分类名合并成一个文本进行匹配
         const results = allPosts.filter(post => {
-            const inTitle = post.title.toLowerCase().includes(keyword);
-            const inCategory = post.categories.some(cat => cat.toLowerCase().includes(keyword));
-            return inTitle || inCategory;
+            const text = (post.title + ' ' + (post.categories || []).join(' ')).toLowerCase();
+            return matchesKeyword(text, keyword);
         });
 
         // 更新数量
