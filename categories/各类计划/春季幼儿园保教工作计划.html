@@ -253,170 +253,85 @@ function handleLinkClick(e) {
     <title>春季幼儿园保教工作计划 - 幼儿课件网</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        /* ========== 全局基础样式 ========== */
         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f6f8; color: #333; margin: 0; }
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-
-        /* 文章卡片样式 */
         .post-card { background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        
-        /* 标题和元数据 */
         .post-title { text-align: center; font-size: 2.2rem; color: #2c3e50; margin-bottom: 10px; }
         .post-meta { text-align: center; color: #95a5a6; font-size: 0.9rem; margin-bottom: 30px; }
-
-        /* 封面图样式 */
         .post-cover { width: 100%; height: auto; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: block; object-fit: contain; }
 
-        /* ========== 🌟 终极修复：解决 h1 标题距离上方过远的问题 ========== */
+        .post-card h1 { margin-top: 0 !important; margin-bottom: 15px !important; }
+        .post-card .post-meta { margin-bottom: 15px !important; }
+        .post-card .article-content { margin-top: 5px !important; }
+        .article-header { margin-top: 0 !important; padding-top: 0 !important; }
+        .divider { margin: 10px 0 !important; }
 
-        /* 1. 关键修复：强制取消 layout.ejs 中 h1 的 100px 上边距 */
-        /* 这个规则会覆盖全局样式，只影响文章卡片内的 h1 */
-        .post-card h1 {
-            margin-top: 0 !important;     /* 🔥 强制覆盖 layout.ejs 的 100px */
-            margin-bottom: 15px !important; /* 标题下方的间距 */
-        }
-
-        /* 2. 微调：减小日期/浏览量的底部边距 */
-        .post-card .post-meta {
-            margin-bottom: 15px !important;
-        }
-
-        /* 3. 紧凑内容区域 */
-        .post-card .article-content {
-            margin-top: 5px !important; /* 进一步缩小，因为 h1 已经处理好了 */
-        }
-
-        /* 4. 针对 ceshi7.py 生成的 article-header */
-        .article-header {
-            margin-top: 0 !important;
-            padding-top: 0 !important;
-        }
-
-        /* 5. 调整分隔线 */
-        .divider {
-            margin: 10px 0 !important;
-        }
-
-        /* ========== 🌟 核心修复一：文章宽度加宽 (1300px) ========== */
-        article, .post-content, .article-entry, .markdown-body, 
-        #content, .content, main, .entry-content, 
+        article, .post-content, .article-entry, .markdown-body,
+        #content, .content, main, .entry-content,
         .post, .post-main, .article, .article-wrapper,
         .container.main-container {
-            max-width: 1300px !important;
-            width: 100% !important;
-            margin: 0 auto;
-            padding: 0 20px;
-            box-sizing: border-box;
+            max-width: 1300px !important; width: 100% !important;
+            margin: 0 auto; padding: 0 20px; box-sizing: border-box;
         }
-
-        /* 确保图片正常显示 */
-        article img, .post-content img, .article-entry img, 
+        article img, .post-content img, .article-entry img,
         .markdown-body img, #content img, .content img {
-            max-width: 100%;
-            height: auto;
-            display: block;
+            max-width: 100%; height: auto; display: block;
         }
 
-        /* ========== 🌟 核心修复二：购买弹窗 (屏幕居中，不闪屏) ========== */
+        /* ========== 弹窗 ========== */
         .modal-overlay {
-            display: none; /* 默认隐藏 */
-            position: fixed !important; /* 🔥 强制固定定位，相对于屏幕 */
-            top: 0 !important;
-            left: 0 !important;
-            width: 100vw !important;  /* 🔥 强制占满屏幕宽度 */
-            height: 100vh !important; /* 🔥 强制占满屏幕高度 */
+            display: none;
+            position: fixed !important; top: 0 !important; left: 0 !important;
+            width: 100vw !important; height: 100vh !important;
             background-color: rgba(0, 0, 0, 0.6);
-            z-index: 99999 !important; /* 🔥 最高层级 */
-            justify-content: center;
-            align-items: center;
+            z-index: 99999 !important;
+            justify-content: center; align-items: center;
             animation: fadeIn 0.3s ease-in-out;
         }
-
         .modal-box {
-            background: #fff;
-            width: 320px;
-            max-width: 90%;
-            padding: 30px 20px;
-            border-radius: 12px;
+            background: #fff; width: 320px; max-width: 90%;
+            padding: 30px 20px; border-radius: 12px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            animation: slideUp 0.3s ease-out;
+            text-align: center; animation: slideUp 0.3s ease-out;
             position: relative;
         }
-
-        .modal-title {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-
-        .modal-qrcode {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 15px;
-            border: 2px solid #f0f0f0;
-            border-radius: 8px;
-            padding: 10px;
-            background: #fafafa;
-        }
-
-        .modal-hint {
-            font-size: 0.9rem;
-            color: #999;
-            margin-top: 15px;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.5rem;
-            color: #ccc;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
+        .modal-title { font-size: 1.4rem; font-weight: bold; color: #2c3e50; margin-bottom: 20px; }
+        .modal-qrcode { width: 200px; height: 200px; margin: 0 auto 15px; border: 2px solid #f0f0f0; border-radius: 8px; padding: 10px; background: #fafafa; }
+        .modal-hint { font-size: 0.9rem; color: #999; margin-top: 15px; }
+        .modal-close { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; color: #ccc; cursor: pointer; transition: color 0.2s; }
         .modal-close:hover { color: #666; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* ========== 其他样式 (付费卡片、底部按钮) ========== */
+        /* ========== 付费卡片 ========== */
         .pay-card { margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #fff6e6 0%, #fff 100%); border: 2px solid #ffd591; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
         .pay-title { margin: 0 0 15px 0; color: #d48806; font-size: 1.2em; font-weight: bold; }
         .pay-desc { margin-bottom: 20px; color: #666; font-size: 0.95em; }
         .pay-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .btn-vip { display: inline-block; padding: 12px 25px; background: linear-gradient(to right, #fadb14, #ffec3d); color: #873800; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(250, 219, 20, 0.4); transition: transform 0.2s; }
         .btn-buy { display: inline-block; padding: 12px 25px; background-color: #1890ff; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(24, 144, 255, 0.3); transition: transform 0.2s; }
-        
-        /* 🌟 新增：立即下载按钮样式 */
         .btn-download {
-            display: inline-block;
-            padding: 12px 25px;
-            background-color: #52c41a; /* 绿色背景，代表下载 */
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 1rem;
+            display: inline-block; padding: 12px 25px;
+            background: linear-gradient(135deg, #52c41a, #389e0d);
+            color: white; text-decoration: none; border-radius: 25px;
+            font-weight: bold; font-size: 1rem;
             box-shadow: 0 4px 10px rgba(82, 196, 26, 0.3);
-            transition: transform 0.2s;
+            transition: transform 0.2s; cursor: pointer; border: none;
         }
-        .btn-download:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.05);
-        }
-        
+        .btn-download:hover { transform: translateY(-2px); filter: brightness(1.05); }
+        .btn-download:disabled, .btn-download.disabled { background: #d9d9d9 !important; color: #999 !important; cursor: not-allowed; transform: none; }
         .btn-vip:hover, .btn-buy:hover { transform: translateY(-2px); filter: brightness(1.05); }
         .pay-note { margin-top: 15px; font-size: 0.8em; color: #999; display: block; width: 100%; text-align: center; }
 
-        /* 底部导航区域样式 */
+        /* 网盘弹窗内容 */
+        .dl-link-box { word-break: break-all; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 8px; padding: 12px 10px; margin: 10px 0; font-size: 0.95rem; color: #237804; }
+        .dl-code { font-size: 1.2rem; letter-spacing: 3px; color: #d48806; font-weight: bold; margin: 8px 0; }
+        .btn-copy { display: inline-block; margin-top: 5px; padding: 8px 20px; background: #1890ff; color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 0.9rem; }
+        .btn-copy:hover { filter: brightness(1.1); }
+        .dl-remain { font-size: 0.85rem; color: #999; margin-top: 10px; }
+        .dl-error { color: #cf1322; font-size: 0.95rem; margin: 10px 0; }
+
+        /* 底部导航 */
         .article-footer { margin-top: 40px; padding-top: 30px; border-top: 1px dashed #e8e8e8; text-align: center; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .article-footer .btn { display: inline-block; min-width: 150px; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-size: 1rem; font-weight: 500; transition: all 0.3s ease; }
         .btn-back { background-color: #e6f7ff; color: #0050b3; border: 1px solid #91d5ff; }
@@ -424,13 +339,34 @@ function handleLinkClick(e) {
         .btn-home { background-color: #fff7e6; color: #d46b08; border: 1px solid #ffd591; }
         .btn-home:hover { background-color: #ffe7ba; color: #ad4e00; border-color: #ffa940; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(250, 219, 20, 0.2); }
 
-            /* ========== 手机端内容区域加宽 ========== */
-    @media (max-width: 768px) {
-        /* 🌟 文章卡片内边距缩小：从 40px 减小到 10px，内容瞬间变宽 */
-        .post-card {
-            padding: 20px 10px !important;
+        /* 复制分享链接按钮 */
+        .share-bar { margin-top: 30px; text-align: center; }
+        .btn-share {
+            display: inline-block; padding: 10px 22px;
+            background: #fff; color: #2c3e50;
+            border: 1px solid #d9d9d9; border-radius: 22px;
+            font-size: 0.95rem; cursor: pointer;
+            transition: all 0.2s; text-decoration: none;
         }
-    }
+        .btn-share:hover { background: #f0f7ff; border-color: #91d5ff; color: #1890ff; }
+
+        /* 相关推荐 */
+        .related-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #f0f0f0; }
+        .related-title { font-size: 1.2rem; color: #2c3e50; margin-bottom: 18px; font-weight: bold; }
+        .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        @media (max-width: 768px) { .related-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        .rel-card { background: #fff; border: 1px solid #eee; border-radius: 8px; overflow: hidden; transition: 0.2s; display: flex; flex-direction: column; }
+        .rel-card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .rel-img { width: 100%; height: 120px; overflow: hidden; background: #f9f9f9; display: flex; align-items: center; justify-content: center; }
+        .rel-img img { width: 100%; height: auto; max-height: 120px; object-fit: contain; }
+        .rel-body { padding: 10px 12px; flex: 1; display: flex; flex-direction: column; }
+        .rel-card-title { font-size: 0.9rem; font-weight: bold; color: #2c3e50; line-height: 1.4; flex: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+        .rel-card-title a { text-decoration: none; color: inherit; }
+        .rel-card:hover .rel-card-title { color: #1890ff; }
+
+        @media (max-width: 768px) {
+            .post-card { padding: 20px 10px !important; }
+        }
     </style>
 </head>
 <body>
@@ -439,7 +375,6 @@ function handleLinkClick(e) {
         <div class="post-card">
             <h1 class="post-title">春季幼儿园保教工作计划</h1>
             
-            <!-- 封面图显示区域 -->
             
                 <div style="text-align: center; margin-bottom: 30px;">
                     <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/plans/%E4%BF%9D%E6%95%99%E5%B7%A5%E4%BD%9C%E8%AE%A1%E5%88%92/%E6%98%A5%E5%AD%A3%E5%B9%BC%E5%84%BF%E5%9B%AD%E4%BF%9D%E6%95%99%E5%B7%A5%E4%BD%9C%E8%AE%A1%E5%88%92/20260222163102_%25E6%2595%2599%25E6%25A1%2588_01.jpg" alt="封面图" class="post-cover">
@@ -452,10 +387,8 @@ function handleLinkClick(e) {
                 <span>👁 16631 次浏览</span>
             </div>
 
-            <!-- 🌟 正文内容区域 -->
             <div class="article-content">
                 
-
                 <div class="article-header">
 
 <h1>春季幼儿园保教工作计划</h1>
@@ -703,24 +636,26 @@ function handleLinkClick(e) {
             </div>
 
             <!-- ======================================================= -->
-            <!-- 【区域一：付费下载卡片 - 文章内部】 -->
+            <!-- 【付费下载卡片】 -->
+            <!-- 未登录：显示 VIP + 单篇购买 -->
+            <!-- 已登录有权限：只显示下载按钮 -->
             <!-- ======================================================= -->
-            <div class="pay-card">
+            <div class="pay-card" id="pay-card">
                 <div class="pay-title">📥 获取本课完整资源</div>
                 <div class="pay-desc">包含高清PPT课件 + 详细教案 + 配套素材</div>
                 
                 <div class="pay-buttons">
-                    <a href="/vip-member/" class="btn-vip">
+                    <a target="_blank" rel="noopener" href="https://yekjw.top/vip-member/" class="btn-vip" id="btn-vip">
                        👑 开通VIP会员 (全站免费)
                     </a>
                     
-                    <a href="javascript:void(0);" onclick="openModal()" class="btn-buy">
+                    <a href="javascript:void(0);" onclick="openModal()" class="btn-buy" id="btn-buy">
                        🛒 单篇购买 (4.99元)
                     </a>
                     
-                    <!-- 🌟 新增：立即下载按钮 -->
-                    <a href="javascript:void(0);" onclick="yekjwDownload()" class="btn-download">
-                       ⬇️ 立即下载 (VIP免费)
+                    <!-- 下载按钮：默认隐藏，登录检测后显示 -->
+                    <a href="javascript:void(0);" onclick="yekjwDownload()" class="btn-download" id="btn-download" style="display:none;">
+                       ⬇️ 下载课件
                     </a>
                 </div>
                 
@@ -728,10 +663,109 @@ function handleLinkClick(e) {
             </div>
 
             <!-- ======================================================= -->
-            <!-- 【区域二：底部导航返回栏 - 文章外部】 -->
+            <!-- 【复制链接给同事】 -->
+            <!-- ======================================================= -->
+            <div class="share-bar">
+                <a href="javascript:void(0);" onclick="yekjwCopyShare()" class="btn-share">
+                    📋 复制链接发给同事
+                </a>
+            </div>
+
+            <!-- ======================================================= -->
+            <!-- 【相关推荐：同分类 6 篇】 -->
+            <!-- ======================================================= -->
+            
+            
+            <div class="related-section">
+                <div class="related-title">📚 你可能还需要</div>
+                <div class="related-grid">
+                    
+                    <div class="rel-card">
+                        <div class="rel-img">
+                            
+                                <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/plans/%E7%8F%AD%E7%BA%A7%E8%AE%A1%E5%88%92/%E4%B8%AD%E7%8F%AD%E7%8F%AD%E7%BA%A7%E5%AD%A6%E6%9C%9F%E8%AE%A1%E5%88%92/20260222162012_%25E6%2595%2599%25E6%25A1%2588_01.jpg" alt="中班班级学期计划" loading="lazy">
+                            
+                        </div>
+                        <div class="rel-body">
+                            <div class="rel-card-title">
+                                <a href="/categories/各类计划/中班班级学期计划.html">中班班级学期计划</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rel-card">
+                        <div class="rel-img">
+                            
+                                <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/plans/%E5%85%A8%E5%9B%AD%E5%B7%A5%E4%BD%9C%E8%AE%A1%E5%88%92/%E7%AC%AC%E4%BA%8C%E5%AD%A6%E6%9C%9F%E5%9B%AD%E5%8A%A1%E8%AE%A1%E5%88%92/20260222162457_%25E6%2595%2599%25E6%25A1%2588_01.jpg" alt="第二学期园务计划" loading="lazy">
+                            
+                        </div>
+                        <div class="rel-body">
+                            <div class="rel-card-title">
+                                <a href="/categories/各类计划/第二学期园务计划.html">第二学期园务计划</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rel-card">
+                        <div class="rel-img">
+                            
+                                <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/plans/%E5%9B%AD%E6%9C%AC%E8%AE%A1%E5%88%92/%E5%B9%BC%E5%84%BF%E5%9B%AD%E7%AC%AC%E4%B8%80%E5%AD%A6%E6%9C%9F%E5%9B%AD%E6%9C%AC%E5%9F%B9%E8%AE%AD%E8%AE%A1%E5%88%92%EF%BC%88%E4%B8%89%EF%BC%89/20260222162748_%25E6%2595%2599%25E6%25A1%2588_01.jpg" alt="幼儿园第一学期园本培训计划（三）" loading="lazy">
+                            
+                        </div>
+                        <div class="rel-body">
+                            <div class="rel-card-title">
+                                <a href="/categories/各类计划/幼儿园第一学期园本培训计划（三）.html">幼儿园第一学期园本培训计划（三）</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rel-card">
+                        <div class="rel-img">
+                            
+                                <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/plans/%E5%B7%A5%E4%BC%9A%E8%AE%A1%E5%88%92/%E5%B9%BC%E5%84%BF%E5%9B%AD%E5%B7%A5%E4%BC%9A%E8%AE%A1%E5%88%92/20260222161823_%25E6%2595%2599%25E6%25A1%2588_01.jpg" alt="幼儿园工会计划" loading="lazy">
+                            
+                        </div>
+                        <div class="rel-body">
+                            <div class="rel-card-title">
+                                <a href="/categories/各类计划/幼儿园工会计划.html">幼儿园工会计划</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rel-card">
+                        <div class="rel-img">
+                            
+                                <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/plans/%E7%96%AB%E6%83%85%E7%9B%B8%E5%85%B3%E8%AE%A1%E5%88%92/%E5%B9%BC%E5%84%BF%E5%9B%AD%E7%96%AB%E6%83%85%E9%98%B2%E6%8E%A7%E4%B8%AA%E4%BA%BA%E5%B7%A5%E4%BD%9C%E8%AE%A1%E5%88%92%E4%B8%80/20260222162718_%25E6%2595%2599%25E6%25A1%2588_01.jpg" alt="幼儿园疫情防控个人工作计划一" loading="lazy">
+                            
+                        </div>
+                        <div class="rel-body">
+                            <div class="rel-card-title">
+                                <a href="/categories/各类计划/幼儿园疫情防控个人工作计划一.html">幼儿园疫情防控个人工作计划一</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="rel-card">
+                        <div class="rel-img">
+                            
+                                <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/plans/%E7%8F%AD%E7%BA%A7%E8%AE%A1%E5%88%92/%E5%A4%A7%E7%8F%AD%E4%B8%8B%E5%AD%A6%E6%9C%9F%E7%8F%AD%E5%8A%A1%E8%AE%A1%E5%88%92/20260222162030_%25E6%2595%2599%25E6%25A1%2588_01.jpg" alt="大班下学期班务计划" loading="lazy">
+                            
+                        </div>
+                        <div class="rel-body">
+                            <div class="rel-card-title">
+                                <a href="/categories/各类计划/大班下学期班务计划.html">大班下学期班务计划</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+
+            <!-- ======================================================= -->
+            <!-- 【底部导航返回栏】 -->
             <!-- ======================================================= -->
             <div class="article-footer">
-                
                 
                 <a href="/" class="btn btn-back">返回课程列表</a>
                 <a href="/" class="btn btn-home">返回首页</a>
@@ -741,171 +775,185 @@ function handleLinkClick(e) {
     </div>
 
     <script>
-    // 打开购买弹窗
     function openModal() {
         document.getElementById('purchase-modal').style.display = 'flex';
     }
-
-    // 关闭购买弹窗
     function closeModal() {
         document.getElementById('purchase-modal').style.display = 'none';
     }
-
-    // 🌟 打开登录提示弹窗
-    function showLoginTip() {
-        document.getElementById('login-tip-modal').style.display = 'flex';
-    }
-
-    // 🌟 关闭登录提示弹窗
-    function closeLoginTip() {
-        document.getElementById('login-tip-modal').style.display = 'none';
-    }
-
-    // 按ESC键关闭弹窗
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             closeModal();
-            closeLoginTip();
+            closeDlModal();
         }
     });
     </script>
 
-    <!-- 🌟 购买弹窗 HTML -->
-            <div class="modal-overlay" id="purchase-modal" onclick="closeModal()">
-                <div class="modal-box" onclick="event.stopPropagation()">
-                    <span class="modal-close" onclick="closeModal()">&times;</span>
-                    <div class="modal-title">💳 微信扫码购买</div>
-                    <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E4%BA%8C%E7%BB%B4%E7%A0%81/5046c8071baec05fdc270f8aa31e93b5.jpg" alt="微信支付二维码" class="modal-qrcode">
-                    <div class="modal-hint">使用微信扫一扫完成支付</div>
+    <!-- 购买弹窗 -->
+    <div class="modal-overlay" id="purchase-modal" onclick="closeModal()">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <div class="modal-title">💳 微信扫码购买</div>
+            <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E4%BA%8C%E7%BB%B4%E7%A0%81/5046c8071baec05fdc270f8aa31e93b5.jpg" alt="微信支付二维码" class="modal-qrcode">
+            <div class="modal-hint">使用微信扫一扫完成支付</div>
+        </div>
+    </div>
+
+    <!-- 下载结果弹窗 -->
+    <div class="modal-overlay" id="download-modal" onclick="closeDlModal()">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <span class="modal-close" onclick="closeDlModal()">&times;</span>
+            <div class="modal-title">🎉 下载链接已生成</div>
+            <div id="dl-error" class="dl-error" style="display:none;"></div>
+            <div id="dl-content" style="display:none;">
+                <div class="modal-hint">网盘链接：</div>
+                <div class="dl-link-box" id="dl-link">-</div>
+                <button class="btn-copy" onclick="yekjwCopyLink()">复制链接</button>
+                <div id="dl-code-row" style="display:none;">
+                    <div class="modal-hint">提取码：</div>
+                    <div class="dl-code" id="dl-code">-</div>
                 </div>
+                <div class="dl-remain" id="dl-remain"></div>
             </div>
+        </div>
+    </div>
 
-    <!-- 🌟 登录提示弹窗 HTML (新增) -->
-            <div class="modal-overlay" id="login-tip-modal" onclick="closeLoginTip()">
-                <div class="modal-box" onclick="event.stopPropagation()">
-                    <span class="modal-close" onclick="closeLoginTip()">&times;</span>
-                    <div class="modal-title">🔐 温馨提示</div>
-                    
-                    <!-- 这里把二维码位置换成文字提示 -->
-                    <div class="modal-qrcode" style="height: auto; padding: 20px; background: none; border: none; display: flex; align-items: center; justify-content: center;">
-                        <p style="font-size: 1.2rem; color: #333; font-weight: bold; margin: 0;">请登录后进行下载</p>
-                    </div>
-
-                    <div class="modal-hint">
-                        <a href="/login" style="color: #1890ff; text-decoration: underline; font-weight: bold;">前往登录页面 &rarr;</a>
-                    </div>
-                </div>
-            </div>
-
-<script src="/js/auth.js"></script>
-<script>
-    // ============ 会员下载逻辑（v2 · SSO 版）============
+    <!-- 登录 & 下载逻辑 -->
+    <script src="/js/auth.js"></script>
+    <script>
     var POST_PATH = "/categories/各类计划/春季幼儿园保教工作计划.html";
 
-    function yekjwDownload() {
-        if (!window.YekjwAuth) {
-            alert('登录组件未加载，请刷新页面重试');
-            return;
-        }
-        if (!YekjwAuth.isLoggedIn()) {
-            // 未登录 → 跳主站登录，登录后自动回到当前页
-            var back = window.location.href;
-            window.location.href = 'https://yekjw.top/login/?redirect=' + encodeURIComponent(back);
-            return;
-        }
-        doDownload();
-    }
-
-    function doDownload() {
-        YekjwAuth.download(POST_PATH).then(function (data) {
-            if (data && data.link) {
-                showDownloadResult(data.link, data.code || '');
-            } else if (data && data._status === 403) {
-                alert(data.message || '没有下载权限，请升级会员或联系客服');
-            } else if (data && data._status === 401) {
-                alert('登录已过期，请重新登录');
-                setTimeout(function () {
-                    window.location.href = 'https://yekjw.top/login/?redirect=' +
-                        encodeURIComponent(window.location.href);
-                }, 800);
-            } else {
-                alert((data && data.message) || '下载失败，请稍后重试');
-            }
-        }).catch(function () {
-            alert('网络异常，请稍后重试');
-        });
-    }
-
-    function showDownloadResult(link, code) {
-        var box = document.getElementById('dl-result-modal');
-        if (!box) {
-            box = document.createElement('div');
-            box.id = 'dl-result-modal';
-            box.className = 'modal-overlay';
-            box.onclick = function (e) {
-                if (e.target === box) box.style.display = 'none';
-            };
-            document.body.appendChild(box);
-        }
-        var copyText = link + (code ? ' 提取码：' + code : '');
-        box.innerHTML =
-            '<div class="modal-box" onclick="event.stopPropagation()" style="width:400px;max-width:92%;">' +
-                '<span class="modal-close" onclick="document.getElementById(\'dl-result-modal\').style.display=\'none\'">&times;</span>' +
-                '<div class="modal-title">✅ 获取成功</div>' +
-                '<div style="text-align:left;padding:10px 0;word-break:break-all;">' +
-                    '<div style="margin-bottom:14px;">' +
-                        '<b>网盘链接：</b><br>' +
-                        '<a href="' + link + '" target="_blank" rel="noopener" style="color:#1890ff;">' + link + '</a>' +
-                    '</div>' +
-                    (code ? '<div style="margin-bottom:14px;"><b>提取码：</b> <span style="color:#cf1322;font-weight:bold;font-size:1.2rem;">' + code + '</span></div>' : '') +
-                    '<button type="button" id="dl-copy-btn" style="width:100%;padding:11px;background:#1890ff;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:1rem;">📋 复制链接和提取码</button>' +
-                '</div>' +
-                '<div class="modal-hint">请及时保存，链接仅本次显示</div>' +
-            '</div>';
-        box.style.display = 'flex';
-
-        // 复制按钮（走 clipboard，失败 fallback 到 execCommand）
-        var btn = document.getElementById('dl-copy-btn');
-        btn.onclick = function () {
-            var txt = copyText;
-            function done() { btn.textContent = '✅ 已复制'; }
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(txt).then(done).catch(function () { fallback(); });
-            } else { fallback(); }
-            function fallback() {
-                var ta = document.createElement('textarea');
-                ta.value = txt;
-                ta.style.position = 'fixed'; ta.style.opacity = '0';
-                document.body.appendChild(ta);
-                ta.select();
-                try { document.execCommand('copy'); done(); } catch (e) { alert('复制失败，请手动复制'); }
-                document.body.removeChild(ta);
-            }
-        };
-    }
-
-    // 已登录时，自动把按钮文字改成「⬇️ 下载课件（今日剩余 X 次）」
+    /* 1) 页面加载：根据登录状态切换按钮 */
     document.addEventListener('DOMContentLoaded', function () {
         if (!window.YekjwAuth) return;
         YekjwAuth.me().then(function (user) {
-            if (!user) return;
-            var btn = document.querySelector('.btn-download');
-            if (!btn) return;
-            if (user.canDownload) {
-                btn.textContent = '⬇️ 下载课件（今日剩 ' + user.remainingToday + ' 次）';
-            } else {
-                btn.textContent = '⚠️ 下载次数已用完';
-                btn.style.background = '#999';
-                btn.style.cursor = 'not-allowed';
-                btn.onclick = function () { alert('下载次数已用完，请续费或联系客服'); };
+            if (!user) return;            // 未登录 → 保持 VIP + 单篇购买
+            var vipBtn = document.getElementById('btn-vip');
+            var buyBtn = document.getElementById('btn-buy');
+            var dlBtn = document.getElementById('btn-download');
+
+            if (user.canDownload && !user.expired && user.remaining > 0) {
+                // 有权限 → 隐藏 VIP/购买，显示下载按钮
+                if (vipBtn) vipBtn.style.display = 'none';
+                if (buyBtn) buyBtn.style.display = 'none';
+                if (dlBtn) {
+                    dlBtn.style.display = 'inline-block';
+                    refreshDlBtn(user);
+                }
+            } else if (user.expired || user.remaining <= 0) {
+                // 已登录但无权限/过期/次数用完 → 只隐藏下载，保留 VIP + 购买
+                if (dlBtn) dlBtn.style.display = 'none';
             }
         });
     });
-</script>
+
+    function refreshDlBtn(user) {
+        var dlBtn = document.getElementById('btn-download');
+        if (!dlBtn) return;
+        if (user.remainingToday <= 0) {
+            dlBtn.classList.add('disabled');
+            dlBtn.innerHTML = '⏰ 今日已达上限（明天 0 点重置）';
+        } else {
+            dlBtn.classList.remove('disabled');
+            dlBtn.innerHTML = '⬇️ 下载课件（今日剩 ' + user.remainingToday + ' 次 / 总剩 ' + user.remaining + ' 次）';
+        }
+    }
+
+    /* 2) 点击下载 */
+    function yekjwDownload() {
+        if (!window.YekjwAuth) return;
+        YekjwAuth.me().then(function (user) {
+            if (!user) { redirectToLogin(); return; }
+            if (user.expired) { alert('会员已过期，请续费或联系客服'); return; }
+            if (user.remaining <= 0) { alert('下载次数已用完，请联系客服充值'); return; }
+            if (user.remainingToday <= 0) { alert('今日下载次数已用完（每天限 ' + user.dailyLimit + ' 次），明天再来吧'); return; }
+            doDownload();
+        });
+    }
+
+    function doDownload() {
+        var dlBtn = document.getElementById('btn-download');
+        var oldHtml = dlBtn ? dlBtn.innerHTML : '';
+        if (dlBtn) { dlBtn.innerHTML = '⏳ 正在获取…'; }
+
+        YekjwAuth.download(POST_PATH).then(function (data) {
+            if (dlBtn) { dlBtn.innerHTML = oldHtml; }
+            if (data._status === 200 && data.ok) {
+                document.getElementById('dl-content').style.display = '';
+                document.getElementById('dl-error').style.display = 'none';
+                document.getElementById('dl-link').textContent = data.link;
+                var codeRow = document.getElementById('dl-code-row');
+                if (data.code) {
+                    codeRow.style.display = '';
+                    document.getElementById('dl-code').textContent = data.code;
+                } else { codeRow.style.display = 'none'; }
+                document.getElementById('dl-remain').textContent =
+                    '本次已扣 1 次 · 今日剩 ' + data.remainingToday + ' 次 / 总剩 ' + data.remaining + ' 次';
+                document.getElementById('download-modal').style.display = 'flex';
+                YekjwAuth.me().then(function (u) { if (u) refreshDlBtn(u); });
+            } else {
+                handleDlError(data);
+            }
+        }).catch(function () {
+            if (dlBtn) { dlBtn.innerHTML = oldHtml; }
+            handleDlError({ message: '网络异常，请稍后再试' });
+        });
+    }
+
+    function handleDlError(data) {
+        if (data._status === 401) { redirectToLogin(); return; }
+        var errBox = document.getElementById('dl-error');
+        errBox.textContent = '❌ ' + (data.message || '获取下载链接失败，请稍后再试');
+        errBox.style.display = '';
+        document.getElementById('dl-content').style.display = 'none';
+        document.getElementById('download-modal').style.display = 'flex';
+    }
+
+    function redirectToLogin() {
+        var back = window.location.href;
+        if (confirm('请先登录后再下载，是否前往登录页？')) {
+            window.location.href = 'https://yekjw.top/login/?redirect=' + encodeURIComponent(back);
+        }
+    }
+
+    function closeDlModal() {
+        document.getElementById('download-modal').style.display = 'none';
+    }
+
+    function yekjwCopyLink() {
+        var text = document.getElementById('dl-link').textContent;
+        var code = document.getElementById('dl-code').textContent;
+        if (code && code !== '-') text += ' 提取码：' + code;
+        copyText(text, '已复制到剪贴板');
+    }
+
+    /* 3) 复制链接给同事 */
+    function yekjwCopyShare() {
+        var titleEl = document.querySelector('.post-title');
+        var title = titleEl ? titleEl.textContent.trim() : document.title;
+        var text = '推荐这个课件给你：' + title + '\n' + window.location.href;
+        copyText(text, '已复制，去微信粘贴给同事吧');
+    }
+
+    function copyText(text, okMsg) {
+        function done() { alert('✅ ' + okMsg); }
+        function fallback() {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed'; ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); done(); } catch (e) { alert('复制失败，请手动复制'); }
+            document.body.removeChild(ta);
+        }
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(done).catch(fallback);
+        } else { fallback(); }
+    }
+    </script>
 
 </body>
 </html>
-
         </div>
 
     <!-- 🌟 网站页脚 -->
