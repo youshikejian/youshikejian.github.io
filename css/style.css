@@ -1096,3 +1096,63 @@ main img {
         padding: 0.4rem 1rem;
     }
 }
+
+
+/* ============================================================
+   🌟 移动端优化补丁 E（仅手机端生效，桌面端不受影响）
+   ============================================================ */
+
+/* ---- 回到顶部按钮（由 layout.ejs 补丁 B 的 JS 动态创建） ---- */
+.yekjw-backtop {
+    position: fixed;
+    right: 16px;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px)); /* 避开 iOS 底部小横条 */
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: #2c3e50;
+    color: #fff;
+    font-size: 1.25rem;
+    line-height: 44px;
+    text-align: center;
+    cursor: pointer;
+    z-index: 9998;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    -webkit-tap-highlight-color: transparent;
+    padding: 0;
+}
+.yekjw-backtop.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.yekjw-backtop:active { background: #3498db; }
+
+/* 桌面端隐藏回到顶部按钮（铁律：不改桌面端） */
+@media (min-width: 769px) {
+    .yekjw-backtop { display: none !important; }
+}
+
+/* ---- 手机端：正文容器消掉 20px 左右内边距（配合补丁 C） ---- */
+@media (max-width: 768px) {
+    article,
+    .post-content,
+    .article-entry,
+    .markdown-body,
+    .content,
+    #content,
+    .post,
+    .post-body,
+    .entry-content,
+    .post-main,
+    .article-content {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+    .container { padding-left: 10px !important; padding-right: 10px !important; }
+}

@@ -211,9 +211,48 @@
     margin: 5px 0;       /* 上下间距 */
 }
 .runtime-icon { margin-right: 5px; }
+
+        /* ============================================================
+           🌟 移动端优化补丁 A（仅手机端生效，桌面端不受影响）
+           ============================================================ */
+        @media (max-width: 768px) {
+            /* ---- 1. 顶栏统一：按钮改为 flex 流式排布，间距一致，不再东挤西挤 ---- */
+            .header-content {
+                flex-wrap: wrap;
+                row-gap: 8px;
+                padding: 0 12px;
+            }
+            .logo a { font-size: 1.3rem; }
+            .site-slogan { font-size: 0.75rem; }
+            .header-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+                gap: 6px;
+                width: 100%;
+                margin-left: 0;
+            }
+            .header-buttons a {
+                margin: 0 !important;          /* 覆盖 margin-left:20px / 15px / 8px */
+                margin-top: 0 !important;      /* 覆盖旧规则的 10px 顶推 */
+                font-size: 0.82rem;
+                padding: 7px 10px;
+                white-space: nowrap;
+            }
+
+            /* ---- 2. 收敛第 153~172 行的全局顶推（手机端首屏不再空 150px） ---- */
+            h1, .page-title, .archive-title { margin-top: 8px !important; }
+            .page-content, .article-content { margin-top: 0 !important; }
+
+            /* ---- 3. 通用触控目标 ≥ 44px（分页按钮） ---- */
+            .page-btn { min-height: 44px; box-sizing: border-box; }
+        }
+        @media (max-width: 480px) {
+            .header-buttons a { font-size: 0.78rem; padding: 6px 8px; }
+            .header-buttons { gap: 5px; }
+        }
     </style>
-</script>
-<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "8abf3bcbfe5c494cbb02b5ee8418114d"}'></script><!-- End Cloudflare Web Analytics -->
+    <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cfc2e4c868c640e28bb2cc506bd7ecdd"}'></script><!-- End Cloudflare Web Analytics -->
 <meta name="generator" content="Hexo 8.1.1"></head>
 <body>
 
@@ -254,85 +293,179 @@ function handleLinkClick(e) {
     <title>中班健康安全 哪些虫子会蜇人 - 幼儿课件网</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
+        /* ========== 全局基础样式 ========== */
         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f6f8; color: #333; margin: 0; }
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+
+        /* 文章卡片样式 */
         .post-card { background: #fff; padding: 40px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        /* 标题和元数据 */
         .post-title { text-align: center; font-size: 2.2rem; color: #2c3e50; margin-bottom: 10px; }
         .post-meta { text-align: center; color: #95a5a6; font-size: 0.9rem; margin-bottom: 30px; }
+
+        /* 封面图样式 */
         .post-cover { width: 100%; height: auto; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: block; object-fit: contain; }
 
-        .post-card h1 { margin-top: 0 !important; margin-bottom: 15px !important; }
-        .post-card .post-meta { margin-bottom: 15px !important; }
-        .post-card .article-content { margin-top: 5px !important; }
-        .article-header { margin-top: 0 !important; padding-top: 0 !important; }
-        .divider { margin: 10px 0 !important; }
+        /* ========== 🌟 终极修复：解决 h1 标题距离上方过远的问题 ========== */
 
-        article, .post-content, .article-entry, .markdown-body,
-        #content, .content, main, .entry-content,
-        .post, .post-main, .article, .article-wrapper,
+        /* 1. 关键修复：强制取消 layout.ejs 中 h1 的 100px 上边距 */
+        /* 这个规则会覆盖全局样式，只影响文章卡片内的 h1 */
+        .post-card h1 {
+            margin-top: 0 !important;     /* 🔥 强制覆盖 layout.ejs 的 100px */
+            margin-bottom: 15px !important; /* 标题下方的间距 */
+        }
+
+        /* 2. 微调：减小日期/浏览量的底部边距 */
+        .post-card .post-meta {
+            margin-bottom: 15px !important;
+        }
+
+        /* 3. 紧凑内容区域 */
+        .post-card .article-content {
+            margin-top: 5px !important; /* 进一步缩小，因为 h1 已经处理好了 */
+        }
+
+        /* 4. 针对 ceshi7.py 生成的 article-header */
+        .article-header {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+
+        /* 5. 调整分隔线 */
+        .divider {
+            margin: 10px 0 !important;
+        }
+
+        /* ========== 🌟 核心修复一：文章宽度加宽 (1300px) ========== */
+        article, .post-content, .article-entry, .markdown-body, 
+        #content, .content, main, .entry-content, .post, .post-main, .article, .article-wrapper,
         .container.main-container {
-            max-width: 1300px !important; width: 100% !important;
-            margin: 0 auto; padding: 0 20px; box-sizing: border-box;
-        }
-        article img, .post-content img, .article-entry img,
-        .markdown-body img, #content img, .content img {
-            max-width: 100%; height: auto; display: block;
+            max-width: 1300px !important;
+            width: 100% !important;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
 
-        /* ========== 弹窗 ========== */
+        /* 确保图片正常显示 */
+        article img, .post-content img, .article-entry img, 
+        .markdown-body img, #content img, .content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ========== 🌟 核心修复二：购买弹窗 (屏幕居中，不闪屏) ========== */
         .modal-overlay {
-            display: none;
-            position: fixed !important; top: 0 !important; left: 0 !important;
-            width: 100vw !important; height: 100vh !important;
+            display: none; /* 默认隐藏 */
+            position: fixed !important; /* 🔥 强制固定定位，相对于屏幕 */
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;  /* 🔥 强制占满屏幕宽度 */
+            height: 100vh !important; /* 🔥 强制占满屏幕高度 */
             background-color: rgba(0, 0, 0, 0.6);
-            z-index: 99999 !important;
-            justify-content: center; align-items: center;
+            z-index: 99999 !important; /* 🔥 最高层级 */
+            justify-content: center;
+            align-items: center;
             animation: fadeIn 0.3s ease-in-out;
         }
+
         .modal-box {
-            background: #fff; width: 320px; max-width: 90%;
-            padding: 30px 20px; border-radius: 12px;
+            background: #fff;
+            width: 320px;
+            max-width: 90%;
+            padding: 30px 20px;
+            border-radius: 12px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            text-align: center; animation: slideUp 0.3s ease-out;
+            text-align: center;
+            animation: slideUp 0.3s ease-out;
             position: relative;
         }
-        .modal-title { font-size: 1.4rem; font-weight: bold; color: #2c3e50; margin-bottom: 20px; }
-        .modal-qrcode { width: 200px; height: 200px; margin: 0 auto 15px; border: 2px solid #f0f0f0; border-radius: 8px; padding: 10px; background: #fafafa; }
-        .modal-hint { font-size: 0.9rem; color: #999; margin-top: 15px; }
-        .modal-close { position: absolute; top: 10px; right: 15px; font-size: 1.5rem; color: #ccc; cursor: pointer; transition: color 0.2s; }
-        .modal-close:hover { color: #666; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* ========== 付费卡片 ========== */
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .modal-qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 10px;
+            background: #fafafa;
+        }
+
+        .modal-hint {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 15px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .modal-close:hover { color: #666; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* ========== 其他样式 (付费卡片、底部按钮) ========== */
         .pay-card { margin-top: 40px; padding: 25px; background: linear-gradient(135deg, #fff6e6 0%, #fff 100%); border: 2px solid #ffd591; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
         .pay-title { margin: 0 0 15px 0; color: #d48806; font-size: 1.2em; font-weight: bold; }
         .pay-desc { margin-bottom: 20px; color: #666; font-size: 0.95em; }
         .pay-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .btn-vip { display: inline-block; padding: 12px 25px; background: linear-gradient(to right, #fadb14, #ffec3d); color: #873800; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(250, 219, 20, 0.4); transition: transform 0.2s; }
         .btn-buy { display: inline-block; padding: 12px 25px; background-color: #1890ff; color: white; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 10px rgba(24, 144, 255, 0.3); transition: transform 0.2s; }
-        .btn-download {
-            display: inline-block; padding: 12px 25px;
-            background: linear-gradient(135deg, #52c41a, #389e0d);
-            color: white; text-decoration: none; border-radius: 25px;
-            font-weight: bold; font-size: 1rem;
-            box-shadow: 0 4px 10px rgba(82, 196, 26, 0.3);
-            transition: transform 0.2s; cursor: pointer; border: none;
-        }
-        .btn-download:hover { transform: translateY(-2px); filter: brightness(1.05); }
-        .btn-download:disabled, .btn-download.disabled { background: #d9d9d9 !important; color: #999 !important; cursor: not-allowed; transform: none; }
         .btn-vip:hover, .btn-buy:hover { transform: translateY(-2px); filter: brightness(1.05); }
         .pay-note { margin-top: 15px; font-size: 0.8em; color: #999; display: block; width: 100%; text-align: center; }
 
-        /* 网盘弹窗内容 */
-        .dl-link-box { word-break: break-all; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 8px; padding: 12px 10px; margin: 10px 0; font-size: 0.95rem; color: #237804; }
+        /* ========== 🌟 新增：下载按钮（登录会员可见） ========== */
+        .btn-download {
+            display: none; /* 默认隐藏，登录 JS 检测到权限后显示 */
+            inline-size: fit-content;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #52c41a, #389e0d);
+            color: #fff; text-decoration: none; border-radius: 25px;
+            font-weight: bold; font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(82, 196, 26, 0.35);
+            transition: transform 0.2s; cursor: pointer; border: none;
+        }
+        .btn-download:hover { transform: translateY(-2px); filter: brightness(1.05); }
+        .btn-download:disabled, .btn-download.disabled { background: #d9d9d9; color: #999; cursor: not-allowed; transform: none; }
+
+        /* ========== 🌟 新增：网盘链接弹窗内容样式 ========== */
+        .dl-link-box {
+            word-break: break-all; background: #f6ffed; border: 1px solid #b7eb8f;
+            border-radius: 8px; padding: 12px 10px; margin: 10px 0; font-size: 0.95rem; color: #237804;
+        }
         .dl-code { font-size: 1.2rem; letter-spacing: 3px; color: #d48806; font-weight: bold; margin: 8px 0; }
-        .btn-copy { display: inline-block; margin-top: 5px; padding: 8px 20px; background: #1890ff; color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 0.9rem; }
+        .btn-copy {
+            display: inline-block; margin-top: 5px; padding: 8px 20px;
+            background: #1890ff; color: #fff; border: none; border-radius: 20px;
+            cursor: pointer; font-size: 0.9rem;
+        }
         .btn-copy:hover { filter: brightness(1.1); }
         .dl-remain { font-size: 0.85rem; color: #999; margin-top: 10px; }
         .dl-error { color: #cf1322; font-size: 0.95rem; margin: 10px 0; }
 
-        /* 底部导航 */
+        /* 底部导航区域样式 */
         .article-footer { margin-top: 40px; padding-top: 30px; border-top: 1px dashed #e8e8e8; text-align: center; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
         .article-footer .btn { display: inline-block; min-width: 150px; padding: 12px 20px; border-radius: 6px; text-decoration: none; font-size: 1rem; font-weight: 500; transition: all 0.3s ease; }
         .btn-back { background-color: #e6f7ff; color: #0050b3; border: 1px solid #91d5ff; }
@@ -340,33 +473,84 @@ function handleLinkClick(e) {
         .btn-home { background-color: #fff7e6; color: #d46b08; border: 1px solid #ffd591; }
         .btn-home:hover { background-color: #ffe7ba; color: #ad4e00; border-color: #ffa940; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(250, 219, 20, 0.2); }
 
-        /* 复制分享链接按钮 */
-        .share-bar { margin-top: 30px; text-align: center; }
+        /* ========== 🌟 新增：分享按钮 & 相关推荐 ========== */
+        .share-link-wrap { margin-top: 30px; text-align: center; }
         .btn-share {
-            display: inline-block; padding: 10px 22px;
-            background: #fff; color: #2c3e50;
-            border: 1px solid #d9d9d9; border-radius: 22px;
-            font-size: 0.95rem; cursor: pointer;
-            transition: all 0.2s; text-decoration: none;
+            display: inline-block; padding: 10px 22px; background: #fff; color: #2c3e50;
+            border: 1px solid #d9d9d9; border-radius: 22px; font-size: 0.95rem;
+            cursor: pointer; text-decoration: none; transition: all 0.2s;
         }
-        .btn-share:hover { background: #f0f7ff; border-color: #91d5ff; color: #1890ff; }
+        .btn-share:hover { background: #f5f5f5; border-color: #bfbfbf; }
 
-        /* 相关推荐 */
-        .related-section { margin-top: 40px; padding-top: 30px; border-top: 1px solid #f0f0f0; }
+        .related-box { margin-top: 40px; padding-top: 30px; border-top: 1px solid #f0f0f0; }
         .related-title { font-size: 1.2rem; color: #2c3e50; margin-bottom: 18px; font-weight: bold; }
         .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
-        @media (max-width: 768px) { .related-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
-        .rel-card { background: #fff; border: 1px solid #eee; border-radius: 8px; overflow: hidden; transition: 0.2s; display: flex; flex-direction: column; }
-        .rel-card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
-        .rel-img { width: 100%; height: 120px; overflow: hidden; background: #f9f9f9; display: flex; align-items: center; justify-content: center; }
-        .rel-img img { width: 100%; height: auto; max-height: 120px; object-fit: contain; }
-        .rel-body { padding: 10px 12px; flex: 1; display: flex; flex-direction: column; }
-        .rel-card-title { font-size: 0.9rem; font-weight: bold; color: #2c3e50; line-height: 1.4; flex: 1; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-        .rel-card-title a { text-decoration: none; color: inherit; }
-        .rel-card:hover .rel-card-title { color: #1890ff; }
+        .related-item { background: #fff; border: 1px solid #eee; border-radius: 8px; overflow: hidden; transition: 0.2s; }
+        .related-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); transform: translateY(-2px); }
+        .related-thumb { width: 100%; height: 120px; overflow: hidden; background: #f9f9f9; display: flex; align-items: center; justify-content: center; }
+        .related-thumb img { width: 100%; height: auto; max-height: 120px; object-fit: contain; }
+        .related-body { padding: 10px 12px; }
+        .related-body a {
+            font-size: 0.9rem; font-weight: bold; color: #2c3e50; line-height: 1.4;
+            text-decoration: none; overflow: hidden; display: -webkit-box;
+            -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+        }
+        .related-body a:hover { color: #1890ff; }
 
+            /* ========== 手机端内容区域加宽 ========== */
+    @media (max-width: 768px) {
+        /* 🌟 文章卡片内边距缩小：从 40px 减小到 10px，内容瞬间变宽 */
+        .post-card {
+            padding: 20px 10px !important;
+        }
+        /* 手机端相关推荐改为 2 列，避免太窄 */
+        .related-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+    }
+
+        /* ============================================================
+           🌟 移动端优化补丁 C（仅手机端生效，桌面端不受影响）
+           ============================================================ */
         @media (max-width: 768px) {
-            .post-card { padding: 20px 10px !important; }
+            /* ---- 1. 正文占宽：逐层消除左右留白 ---- */
+            .container { padding: 0 10px !important; margin: 16px auto !important; }
+            .post-card { padding: 16px 8px !important; }
+            /* 消掉 style.css 第 219~237 行加的 20px 内边距（选择器一一对应） */
+            .post-card article, .post-card .post-content, .post-card .article-entry,
+            .post-card .markdown-body, .post-card .content, .post-card #content,
+            .post-card .post, .post-card .post-body, .post-card .entry-content,
+            .post-card .post-main, .post-card .article-content, .post-card .article-header {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                max-width: 100% !important;
+            }
+
+            /* ---- 2. 标题与元信息收敛 ---- */
+            .post-title { font-size: 1.45rem; line-height: 1.45; }
+            .post-meta { margin-bottom: 14px !important; }
+            .post-cover { margin-bottom: 16px; }
+
+            /* ---- 3. 付费卡与页脚按钮（只改间距字号，不动结构） ---- */
+            .pay-card { margin-top: 24px; padding: 16px 10px; }
+            .article-footer { margin-top: 24px; padding-top: 18px; }
+            .article-footer .btn { min-width: 120px; padding: 10px 14px; font-size: 0.9rem; }
+            .share-link-wrap { margin-top: 20px; }
+
+            /* ---- 4. 相关推荐：强制 2 列（问题 7 兜底） ---- */
+            .related-box { margin-top: 24px; padding-top: 18px; }
+            .related-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+            .related-body { padding: 8px; }
+
+            /* ---- 5. 正文里的图片/表格不撑破屏幕，表格可横向滑动 ---- */
+            .article-content img, .article-content video,
+            .article-content table, .post-content table { max-width: 100% !important; }
+            .article-content table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
         }
     </style>
 </head>
@@ -376,6 +560,7 @@ function handleLinkClick(e) {
         <div class="post-card">
             <h1 class="post-title">中班健康安全 哪些虫子会蜇人</h1>
             
+            <!-- 封面图显示区域 -->
             
                 <div style="text-align: center; margin-bottom: 30px;">
                     <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/kecheng/中班健康安全-哪些虫子会蜇人/ppt/20260220154335_ppt_cover_wm.jpg" alt="封面图" class="post-cover">
@@ -388,8 +573,10 @@ function handleLinkClick(e) {
                 <span>👁 13765 次浏览</span>
             </div>
 
+            <!-- 🌟 正文内容区域 -->
             <div class="article-content">
                 
+
                 <div class="article-header">
 
 <h1>中班健康安全 哪些虫子会蜇人</h1>
@@ -608,25 +795,24 @@ function handleLinkClick(e) {
             </div>
 
             <!-- ======================================================= -->
-            <!-- 【付费下载卡片】 -->
-            <!-- 未登录：显示 VIP + 单篇购买 -->
-            <!-- 已登录有权限：只显示下载按钮 -->
+            <!-- 【区域一：付费下载卡片 - 文章内部】 -->
             <!-- ======================================================= -->
-            <div class="pay-card" id="pay-card">
+            <div class="pay-card">
                 <div class="pay-title">📥 获取本课完整资源</div>
                 <div class="pay-desc">包含高清PPT课件 + 详细教案 + 配套素材</div>
                 
                 <div class="pay-buttons">
-                    <a target="_blank" rel="noopener" href="https://yekjw.top/vip-member/" class="btn-vip" id="btn-vip">
+                    <a href="/vip-member/" class="btn-vip">
                        👑 开通VIP会员 (全站免费)
                     </a>
                     
+                    <!-- 🌟 未登录/无权限用户看到的仍是购买按钮 -->
                     <a href="javascript:void(0);" onclick="openModal()" class="btn-buy" id="btn-buy">
                        🛒 单篇购买 (4.99元)
                     </a>
-                    
-                    <!-- 下载按钮：默认隐藏，登录检测后显示 -->
-                    <a href="javascript:void(0);" onclick="yekjwDownload()" class="btn-download" id="btn-download" style="display:none;">
+
+                    <!-- 🌟 新增：登录且有下载权限的会员看到的下载按钮（默认隐藏） -->
+                    <a href="javascript:void(0);" onclick="yekjwDownload()" class="btn-download" id="btn-download">
                        ⬇️ 下载课件
                     </a>
                 </div>
@@ -635,98 +821,86 @@ function handleLinkClick(e) {
             </div>
 
             <!-- ======================================================= -->
-            <!-- 【复制链接给同事】 -->
+            <!-- 🌟 新增：复制链接按钮（发给同事） -->
             <!-- ======================================================= -->
-            <div class="share-bar">
+            <div class="share-link-wrap">
                 <a href="javascript:void(0);" onclick="yekjwCopyShare()" class="btn-share">
                     📋 复制链接发给同事
                 </a>
             </div>
 
             <!-- ======================================================= -->
-            <!-- 【相关推荐：同分类 6 篇】 -->
+            <!-- 🌟 新增：相关推荐（同分类下最新 6 篇） -->
             <!-- ======================================================= -->
             
             
-            <div class="related-section">
+            <div class="related-box">
                 <div class="related-title">📚 你可能还需要</div>
                 <div class="related-grid">
                     
-                    <div class="rel-card">
-                        <div class="rel-img">
+                    <div class="related-item">
+                        <div class="related-thumb">
                             
                                 <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/kecheng/爱要大胆说出来-社会语言中班/ppt/20260220155425_ppt_cover_wm.jpg" alt="爱要大胆说出来 社会语言中班" loading="lazy">
                             
                         </div>
-                        <div class="rel-body">
-                            <div class="rel-card-title">
-                                <a href="/categories/社会/爱要大胆说出来 社会语言中班_中班.html">爱要大胆说出来 社会语言中班</a>
-                            </div>
+                        <div class="related-body">
+                            <a href="/categories/社会/爱要大胆说出来 社会语言中班_中班.html">爱要大胆说出来 社会语言中班</a>
                         </div>
                     </div>
                     
-                    <div class="rel-card">
-                        <div class="rel-img">
+                    <div class="related-item">
+                        <div class="related-thumb">
                             
                                 <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/kecheng/爱要大胆说出来-社会语言中班/ppt/20260220155425_ppt_cover_wm.jpg" alt="爱要大胆说出来 社会语言中班" loading="lazy">
                             
                         </div>
-                        <div class="rel-body">
-                            <div class="rel-card-title">
-                                <a href="/categories/语言/爱要大胆说出来 社会语言中班_中班.html">爱要大胆说出来 社会语言中班</a>
-                            </div>
+                        <div class="related-body">
+                            <a href="/categories/语言/爱要大胆说出来 社会语言中班_中班.html">爱要大胆说出来 社会语言中班</a>
                         </div>
                     </div>
                     
-                    <div class="rel-card">
-                        <div class="rel-img">
+                    <div class="related-item">
+                        <div class="related-thumb">
                             
                                 <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/blog_images/中班/doc_32/20260222212229_文稿_01.jpg" alt="中班美工区推进-装饰白板-3次" loading="lazy">
                             
                         </div>
-                        <div class="rel-body">
-                            <div class="rel-card-title">
-                                <a href="/categories/区域游戏推进/中班/中班美工区推进-装饰白板-3次.html">中班美工区推进-装饰白板-3次</a>
-                            </div>
+                        <div class="related-body">
+                            <a href="/categories/区域游戏推进/中班/中班美工区推进-装饰白板-3次.html">中班美工区推进-装饰白板-3次</a>
                         </div>
                     </div>
                     
-                    <div class="rel-card">
-                        <div class="rel-img">
+                    <div class="related-item">
+                        <div class="related-thumb">
                             
                                 <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/kecheng/好事情-社会语言中班/ppt/20260220122554_ppt_cover_wm.jpg" alt="好事情 社会语言中班" loading="lazy">
                             
                         </div>
-                        <div class="rel-body">
-                            <div class="rel-card-title">
-                                <a href="/categories/社会/好事情 社会语言中班_中班.html">好事情 社会语言中班</a>
-                            </div>
+                        <div class="related-body">
+                            <a href="/categories/社会/好事情 社会语言中班_中班.html">好事情 社会语言中班</a>
                         </div>
                     </div>
                     
-                    <div class="rel-card">
-                        <div class="rel-img">
+                    <div class="related-item">
+                        <div class="related-thumb">
                             
                                 <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/kecheng/好事情-社会语言中班/ppt/20260220122554_ppt_cover_wm.jpg" alt="好事情 社会语言中班" loading="lazy">
                             
                         </div>
-                        <div class="rel-body">
-                            <div class="rel-card-title">
-                                <a href="/categories/语言/好事情 社会语言中班_中班.html">好事情 社会语言中班</a>
-                            </div>
+                        <div class="related-body">
+                            <a href="/categories/语言/好事情 社会语言中班_中班.html">好事情 社会语言中班</a>
                         </div>
                     </div>
                     
-                    <div class="rel-card">
-                        <div class="rel-img">
+                    <div class="related-item">
+                        <div class="related-thumb">
                             
                                 <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/blog_images/014中班家长会ppt讲稿/ppt_1_cover/20260221010853_ppt_cover_wm.jpg" alt="014中班家长会ppt讲稿" loading="lazy">
                             
                         </div>
-                        <div class="rel-body">
-                            <div class="rel-card-title">
-                                <a href="/categories/家长会/第一学期/中班/014中班家长会ppt讲稿.html">014中班家长会ppt讲稿</a>
-                            </div>
+                        <div class="related-body">
+                            <a href="/categories/家长会/第一学期/中班/014中班家长会ppt讲稿.html">014中班家长会ppt讲稿</a>
                         </div>
                     </div>
                     
@@ -735,9 +909,10 @@ function handleLinkClick(e) {
             
 
             <!-- ======================================================= -->
-            <!-- 【底部导航返回栏】 -->
+            <!-- 【区域二：底部导航返回栏 - 文章外部】 -->
             <!-- ======================================================= -->
             <div class="article-footer">
+                
                 
                 <a href="/" class="btn btn-back">返回课程列表</a>
                 <a href="/" class="btn btn-home">返回首页</a>
@@ -747,38 +922,74 @@ function handleLinkClick(e) {
     </div>
 
     <script>
+    // 打开弹窗
     function openModal() {
         document.getElementById('purchase-modal').style.display = 'flex';
     }
+
+    // 关闭弹窗
     function closeModal() {
         document.getElementById('purchase-modal').style.display = 'none';
     }
+
+    // 按ESC键关闭弹窗
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             closeModal();
             closeDlModal();
         }
     });
+
+    // 🌟 新增：复制当前文章链接（优先用短链，没有则用完整地址）
+    function yekjwCopyShare() {
+        var shareUrl = window.location.href;
+        // 如果页面里有 canonical 短链，优先用短链
+        var canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical && canonical.href) {
+            shareUrl = canonical.href;
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(shareUrl).then(function () {
+                alert('链接已复制，去粘贴给同事吧～');
+            }).catch(function () {
+                fallbackCopy(shareUrl);
+            });
+        } else {
+            fallbackCopy(shareUrl);
+        }
+    }
+
+    function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); alert('链接已复制，去粘贴给同事吧～'); }
+        catch (e) { prompt('请手动复制下面的链接：', text); }
+        document.body.removeChild(ta);
+    }
     </script>
 
-    <!-- 购买弹窗 -->
-    <div class="modal-overlay" id="purchase-modal" onclick="closeModal()">
-        <div class="modal-box" onclick="event.stopPropagation()">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <div class="modal-title">💳 微信扫码购买</div>
-            <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E4%BA%8C%E7%BB%B4%E7%A0%81/5046c8071baec05fdc270f8aa31e93b5.jpg" alt="微信支付二维码" class="modal-qrcode">
-            <div class="modal-hint">使用微信扫一扫完成支付</div>
-        </div>
-    </div>
+    <!-- 🌟 购买弹窗 HTML -->
+            <div class="modal-overlay" id="purchase-modal" onclick="closeModal()">
+                <div class="modal-box" onclick="event.stopPropagation()">
+                    <span class="modal-close" onclick="closeModal()">&times;</span>
+                    <div class="modal-title">💳 微信扫码购买</div>
+                    <img src="https://yekjw.oss-cn-qingdao.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E4%BA%8C%E7%BB%B4%E7%A0%81/5046c8071baec05fdc270f8aa31e93b5.jpg" alt="微信支付二维码" class="modal-qrcode">
+                    <div class="modal-hint">使用微信扫一扫完成支付</div>
+                </div>
+            </div>
 
-    <!-- 下载结果弹窗 -->
+    <!-- 🌟 新增：网盘链接弹窗 HTML（下载成功后显示） -->
     <div class="modal-overlay" id="download-modal" onclick="closeDlModal()">
         <div class="modal-box" onclick="event.stopPropagation()">
             <span class="modal-close" onclick="closeDlModal()">&times;</span>
             <div class="modal-title">🎉 下载链接已生成</div>
             <div id="dl-error" class="dl-error" style="display:none;"></div>
             <div id="dl-content" style="display:none;">
-                <div class="modal-hint">网盘链接：</div>
+                <div class="modal-hint">百度网盘链接：</div>
                 <div class="dl-link-box" id="dl-link">-</div>
                 <button class="btn-copy" onclick="yekjwCopyLink()">复制链接</button>
                 <div id="dl-code-row" style="display:none;">
@@ -790,31 +1001,31 @@ function handleLinkClick(e) {
         </div>
     </div>
 
-    <!-- 登录 & 下载逻辑 -->
+    <!-- 🌟 新增：登录与下载逻辑 -->
     <script src="/js/auth.js"></script>
     <script>
+    // 当前文章的 path（即 permalink），后端用它查找对应的网盘链接
     var POST_PATH = "/categories/安全/中班健康安全 哪些虫子会蜇人_中班.html";
 
-    /* 1) 页面加载：根据登录状态切换按钮 */
+    /* 1) 页面加载后检测登录状态：
+          有下载权限 → 隐藏"单篇购买"，显示"下载课件"
+          未登录 / 无权限 / 已过期 → 保持原样（购买按钮） */
     document.addEventListener('DOMContentLoaded', function () {
-        if (!window.YekjwAuth) return;
+        if (!window.YekjwAuth) return; // auth.js 加载失败时不影响原有购买功能
         YekjwAuth.me().then(function (user) {
-            if (!user) return;            // 未登录 → 保持 VIP + 单篇购买
-            var vipBtn = document.getElementById('btn-vip');
+            if (!user) return;                      // 未登录 → 保持购买按钮
+            if (!user.canDownload) return;          // 无下载权限 → 保持购买按钮
+            if (user.expired) return;               // 会员过期 → 保持购买按钮
+
             var buyBtn = document.getElementById('btn-buy');
             var dlBtn = document.getElementById('btn-download');
-
-            if (user.canDownload && !user.expired && user.remaining > 0) {
-                // 有权限 → 隐藏 VIP/购买，显示下载按钮
-                if (vipBtn) vipBtn.style.display = 'none';
-                if (buyBtn) buyBtn.style.display = 'none';
-                if (dlBtn) {
-                    dlBtn.style.display = 'inline-block';
-                    refreshDlBtn(user);
+            if (buyBtn) buyBtn.style.display = 'none';
+            if (dlBtn) {
+                dlBtn.style.display = 'inline-block';
+                refreshDlBtn(user);
+                if (user.remaining <= 0 || user.remainingToday <= 0) {
+                    dlBtn.classList.add('disabled');
                 }
-            } else if (user.expired || user.remaining <= 0) {
-                // 已登录但无权限/过期/次数用完 → 只隐藏下载，保留 VIP + 购买
-                if (dlBtn) dlBtn.style.display = 'none';
             }
         });
     });
@@ -822,21 +1033,17 @@ function handleLinkClick(e) {
     function refreshDlBtn(user) {
         var dlBtn = document.getElementById('btn-download');
         if (!dlBtn) return;
-        if (user.remainingToday <= 0) {
-            dlBtn.classList.add('disabled');
-            dlBtn.innerHTML = '⏰ 今日已达上限（明天 0 点重置）';
-        } else {
-            dlBtn.classList.remove('disabled');
-            dlBtn.innerHTML = '⬇️ 下载课件（今日剩 ' + user.remainingToday + ' 次 / 总剩 ' + user.remaining + ' 次）';
-        }
+        dlBtn.innerHTML = '⬇️ 下载课件（今日剩 ' + user.remainingToday + ' 次 / 总剩 ' + user.remaining + ' 次）';
     }
 
-    /* 2) 点击下载 */
+    /* 2) 点击下载：向后端请求网盘链接（后端负责扣次数） */
     function yekjwDownload() {
         if (!window.YekjwAuth) return;
+        var dlBtn = document.getElementById('btn-download');
+
+        // 无次数时直接提示，不发请求
         YekjwAuth.me().then(function (user) {
             if (!user) { redirectToLogin(); return; }
-            if (user.expired) { alert('会员已过期，请续费或联系客服'); return; }
             if (user.remaining <= 0) { alert('下载次数已用完，请联系客服充值'); return; }
             if (user.remainingToday <= 0) { alert('今日下载次数已用完（每天限 ' + user.dailyLimit + ' 次），明天再来吧'); return; }
             doDownload();
@@ -845,12 +1052,13 @@ function handleLinkClick(e) {
 
     function doDownload() {
         var dlBtn = document.getElementById('btn-download');
-        var oldHtml = dlBtn ? dlBtn.innerHTML : '';
-        if (dlBtn) { dlBtn.innerHTML = '⏳ 正在获取…'; }
+        if (dlBtn) { dlBtn.innerHTML = '⏳ 正在获取链接…'; }
 
         YekjwAuth.download(POST_PATH).then(function (data) {
-            if (dlBtn) { dlBtn.innerHTML = oldHtml; }
+            if (dlBtn) { dlBtn.innerHTML = '⬇️ 下载课件'; }
+
             if (data._status === 200 && data.ok) {
+                // 成功：显示网盘链接弹窗
                 document.getElementById('dl-content').style.display = '';
                 document.getElementById('dl-error').style.display = 'none';
                 document.getElementById('dl-link').textContent = data.link;
@@ -858,22 +1066,26 @@ function handleLinkClick(e) {
                 if (data.code) {
                     codeRow.style.display = '';
                     document.getElementById('dl-code').textContent = data.code;
-                } else { codeRow.style.display = 'none'; }
+                } else {
+                    codeRow.style.display = 'none';
+                }
                 document.getElementById('dl-remain').textContent =
                     '本次已扣 1 次 · 今日剩 ' + data.remainingToday + ' 次 / 总剩 ' + data.remaining + ' 次';
                 document.getElementById('download-modal').style.display = 'flex';
+                // 同步刷新按钮上的剩余次数
                 YekjwAuth.me().then(function (u) { if (u) refreshDlBtn(u); });
             } else {
                 handleDlError(data);
             }
         }).catch(function () {
-            if (dlBtn) { dlBtn.innerHTML = oldHtml; }
+            if (dlBtn) { dlBtn.innerHTML = '⬇️ 下载课件'; }
             handleDlError({ message: '网络异常，请稍后再试' });
         });
     }
 
     function handleDlError(data) {
         if (data._status === 401) { redirectToLogin(); return; }
+        // 失败原因展示在弹窗里（次数不足 / 过期 / 无权限 / 未配置链接）
         var errBox = document.getElementById('dl-error');
         errBox.textContent = '❌ ' + (data.message || '获取下载链接失败，请稍后再试');
         errBox.style.display = '';
@@ -882,9 +1094,9 @@ function handleLinkClick(e) {
     }
 
     function redirectToLogin() {
-        var back = window.location.href;
+        try { sessionStorage.setItem('yekjw_redirect', window.location.href); } catch (e) {}
         if (confirm('请先登录后再下载，是否前往登录页？')) {
-            window.location.href = 'https://yekjw.top/login/?redirect=' + encodeURIComponent(back);
+            window.location.href = '/login/';
         }
     }
 
@@ -896,33 +1108,18 @@ function handleLinkClick(e) {
         var text = document.getElementById('dl-link').textContent;
         var code = document.getElementById('dl-code').textContent;
         if (code && code !== '-') text += ' 提取码：' + code;
-        copyText(text, '已复制到剪贴板');
-    }
-
-    /* 3) 复制链接给同事 */
-    function yekjwCopyShare() {
-        var titleEl = document.querySelector('.post-title');
-        var title = titleEl ? titleEl.textContent.trim() : document.title;
-        var text = '推荐这个课件给你：' + title + '\n' + window.location.href;
-        copyText(text, '已复制，去微信粘贴给同事吧');
-    }
-
-    function copyText(text, okMsg) {
-        function done() { alert('✅ ' + okMsg); }
-        function fallback() {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function () { alert('已复制到剪贴板'); });
+        } else {
+            // 旧浏览器兜底
             var ta = document.createElement('textarea');
-            ta.value = text;
-            ta.style.position = 'fixed'; ta.style.opacity = '0';
-            document.body.appendChild(ta);
-            ta.select();
-            try { document.execCommand('copy'); done(); } catch (e) { alert('复制失败，请手动复制'); }
-            document.body.removeChild(ta);
+            ta.value = text; document.body.appendChild(ta);
+            ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+            alert('已复制到剪贴板');
         }
-        if (navigator.clipboard && window.isSecureContext) {
-            navigator.clipboard.writeText(text).then(done).catch(fallback);
-        } else { fallback(); }
     }
     </script>
+
 
 </body>
 </html>
@@ -954,11 +1151,8 @@ function handleLinkClick(e) {
         </div>
     </div>
 </footer>
-</script>
-</body>
-</html>
-<body>
-    <!-- 🌟 将运行时间JS移到这里（DOM加载后执行） -->
+
+<!-- 🌟 运行时间JS（DOM加载后执行） -->
     <script>
         function updateRuntime() {
             // 🔴【重要】请在这里修改您的建站日期（格式：年/月/日 时:分:秒）
@@ -992,8 +1186,76 @@ function handleLinkClick(e) {
         // 每隔 1 秒刷新一次
         setInterval(updateRuntime, 1000);
     </script>
-</body>
 
+    <!-- 🌟 全站登录组件：顶栏登录按钮登录后显示用户名 -->
+    <script src="/js/auth.js" defer></script>
 
+    <!-- 🌟 移动端体验补丁 B：返回时恢复滚动位置 + 回到顶部按钮 + 顶栏高度自适应 -->
+    <script>
+    (function () {
+        /* ---------- 1. 返回时恢复滚动位置（前进/新点击不恢复） ---------- */
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+        var KEY = 'yekjwScroll:' + location.pathname;
+
+        window.addEventListener('pagehide', function () {
+            try { sessionStorage.setItem(KEY, String(window.scrollY || 0)); } catch (e) {}
+        });
+
+        window.addEventListener('pageshow', function (e) {
+            if (e.persisted) return; /* bfcache 恢复，浏览器自己保留了位置 */
+            var isBack = false;
+            try {
+                var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+                isBack = !!nav && nav.type === 'back_forward';
+            } catch (err) {}
+            if (!isBack) return;
+            try {
+                var y = parseInt(sessionStorage.getItem(KEY) || '0', 10);
+                if (y > 0) {
+                    requestAnimationFrame(function () { window.scrollTo(0, y); });
+                }
+            } catch (err2) {}
+        });
+
+        /* ---------- 2. 回到顶部按钮（移动端专用，样式在 style.css 里） ---------- */
+        if (!document.querySelector('.yekjw-backtop')) {
+            var btn = document.createElement('button');
+            btn.className = 'yekjw-backtop';
+            btn.type = 'button';
+            btn.setAttribute('aria-label', '回到顶部');
+            btn.innerHTML = '&#8593;';
+            btn.addEventListener('click', function () {
+                if ('scrollBehavior' in document.documentElement.style) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    window.scrollTo(0, 0); /* 老 iOS Safari 兜底 */
+                }
+            });
+            var toggle = function () {
+                if (window.scrollY > window.innerHeight) { btn.classList.add('show'); }
+                else { btn.classList.remove('show'); }
+            };
+            window.addEventListener('scroll', toggle, { passive: true });
+            document.body.appendChild(btn);
+            toggle();
+        }
+
+        /* ---------- 3. 顶栏换行后实测高度，动态调整 body 顶部留空 ---------- */
+        function adjustHeaderSpace() {
+            var h = document.querySelector('.site-header');
+            if (!h) return;
+            if (window.innerWidth <= 768) {
+                document.body.style.paddingTop = (h.offsetHeight + 12) + 'px';
+            } else {
+                document.body.style.paddingTop = ''; /* 桌面端恢复原来的 110px */
+            }
+        }
+        window.addEventListener('resize', adjustHeaderSpace);
+        window.addEventListener('orientationchange', adjustHeaderSpace);
+        window.addEventListener('load', adjustHeaderSpace);
+        adjustHeaderSpace();
+        setTimeout(adjustHeaderSpace, 800); /* 等 auth.js 注入完用户名后再校一次 */
+    })();
+    </script>
 </body>
 </html>
