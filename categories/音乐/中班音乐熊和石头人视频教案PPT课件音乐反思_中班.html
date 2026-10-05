@@ -227,20 +227,21 @@
             <a target="_blank" rel="noopener" href="https://yekjw.top/" onclick="handleLinkClick(event)">🏠 首页</a>
             
             <a href="/" class="search-btn">🔍 搜索课件</a>
-            <a href="/login" class="login-btn">🔐 登录</a>
+            <a href="/login/" class="login-btn">🔐 登录</a>
             <a href="/about" style="margin-left: 15px;">关于本站</a>
             <a href="/contact">联系我</a>
         </div>
     </div>
 </header>
 
+<!-- 引入全站登录组件（这是关键，之前漏了） -->
+<script src="/js/auth.js"></script>
 <script>
 function handleLinkClick(e) {
     e.preventDefault();
     window.location.href = e.currentTarget.href;
 }
 </script>
-
 
     <!-- 页面内容 -->
     <div class="container">
@@ -678,7 +679,7 @@ function handleLinkClick(e) {
                     </a>
                     
                     <!-- 🌟 新增：立即下载按钮 -->
-                    <a href="javascript:void(0);" onclick="showLoginTip()" class="btn-download">
+                    <a href="javascript:void(0);" onclick="yekjwDownload()" class="btn-download">
                        ⬇️ 立即下载 (VIP免费)
                     </a>
                 </div>
@@ -751,11 +752,116 @@ function handleLinkClick(e) {
                     </div>
 
                     <div class="modal-hint">
-                        <a href="/admin" style="color: #1890ff; text-decoration: underline; font-weight: bold;">前往登录页面 &rarr;</a>
+                        <a href="/login" style="color: #1890ff; text-decoration: underline; font-weight: bold;">前往登录页面 &rarr;</a>
                     </div>
                 </div>
             </div>
 
+<script src="/js/auth.js"></script>
+<script>
+    // ============ 会员下载逻辑（v2 · SSO 版）============
+    var POST_PATH = "/categories/音乐/中班音乐熊和石头人视频教案PPT课件音乐反思_中班.html";
+
+    function yekjwDownload() {
+        if (!window.YekjwAuth) {
+            alert('登录组件未加载，请刷新页面重试');
+            return;
+        }
+        if (!YekjwAuth.isLoggedIn()) {
+            // 未登录 → 跳主站登录，登录后自动回到当前页
+            var back = window.location.href;
+            window.location.href = 'https://yekjw.top/login/?redirect=' + encodeURIComponent(back);
+            return;
+        }
+        doDownload();
+    }
+
+    function doDownload() {
+        YekjwAuth.download(POST_PATH).then(function (data) {
+            if (data && data.link) {
+                showDownloadResult(data.link, data.code || '');
+            } else if (data && data._status === 403) {
+                alert(data.message || '没有下载权限，请升级会员或联系客服');
+            } else if (data && data._status === 401) {
+                alert('登录已过期，请重新登录');
+                setTimeout(function () {
+                    window.location.href = 'https://yekjw.top/login/?redirect=' +
+                        encodeURIComponent(window.location.href);
+                }, 800);
+            } else {
+                alert((data && data.message) || '下载失败，请稍后重试');
+            }
+        }).catch(function () {
+            alert('网络异常，请稍后重试');
+        });
+    }
+
+    function showDownloadResult(link, code) {
+        var box = document.getElementById('dl-result-modal');
+        if (!box) {
+            box = document.createElement('div');
+            box.id = 'dl-result-modal';
+            box.className = 'modal-overlay';
+            box.onclick = function (e) {
+                if (e.target === box) box.style.display = 'none';
+            };
+            document.body.appendChild(box);
+        }
+        var copyText = link + (code ? ' 提取码：' + code : '');
+        box.innerHTML =
+            '<div class="modal-box" onclick="event.stopPropagation()" style="width:400px;max-width:92%;">' +
+                '<span class="modal-close" onclick="document.getElementById(\'dl-result-modal\').style.display=\'none\'">&times;</span>' +
+                '<div class="modal-title">✅ 获取成功</div>' +
+                '<div style="text-align:left;padding:10px 0;word-break:break-all;">' +
+                    '<div style="margin-bottom:14px;">' +
+                        '<b>网盘链接：</b><br>' +
+                        '<a href="' + link + '" target="_blank" rel="noopener" style="color:#1890ff;">' + link + '</a>' +
+                    '</div>' +
+                    (code ? '<div style="margin-bottom:14px;"><b>提取码：</b> <span style="color:#cf1322;font-weight:bold;font-size:1.2rem;">' + code + '</span></div>' : '') +
+                    '<button type="button" id="dl-copy-btn" style="width:100%;padding:11px;background:#1890ff;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:1rem;">📋 复制链接和提取码</button>' +
+                '</div>' +
+                '<div class="modal-hint">请及时保存，链接仅本次显示</div>' +
+            '</div>';
+        box.style.display = 'flex';
+
+        // 复制按钮（走 clipboard，失败 fallback 到 execCommand）
+        var btn = document.getElementById('dl-copy-btn');
+        btn.onclick = function () {
+            var txt = copyText;
+            function done() { btn.textContent = '✅ 已复制'; }
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(txt).then(done).catch(function () { fallback(); });
+            } else { fallback(); }
+            function fallback() {
+                var ta = document.createElement('textarea');
+                ta.value = txt;
+                ta.style.position = 'fixed'; ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand('copy'); done(); } catch (e) { alert('复制失败，请手动复制'); }
+                document.body.removeChild(ta);
+            }
+        };
+    }
+
+    // 已登录时，自动把按钮文字改成「⬇️ 下载课件（今日剩余 X 次）」
+    document.addEventListener('DOMContentLoaded', function () {
+        if (!window.YekjwAuth) return;
+        YekjwAuth.me().then(function (user) {
+            if (!user) return;
+            var btn = document.querySelector('.btn-download');
+            if (!btn) return;
+            if (user.canDownload) {
+                btn.textContent = '⬇️ 下载课件（今日剩 ' + user.remainingToday + ' 次）';
+            } else {
+                btn.textContent = '⚠️ 下载次数已用完';
+                btn.style.background = '#999';
+                btn.style.cursor = 'not-allowed';
+                btn.onclick = function () { alert('下载次数已用完，请续费或联系客服'); };
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
