@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>联系我 - 幼儿课件网</title>
+    <title>会员登录 - 幼儿课件网</title>
     <link rel="stylesheet" href="/css/style.css">
     <style>
         /* 主体内容 */
@@ -244,45 +244,157 @@ function handleLinkClick(e) {
 
     <!-- 页面内容 -->
     <div class="container">
-        <!-- 🌟 恢复“卡片式”布局的样式 (针对关于本站、联系我等单页) -->
+        <!-- =====================================================================
+     会员登录 / 账户中心页面（v2 · 支持 SSO 回跳）
+     ---------------------------------------------------------------------
+     新增功能：支持 ?redirect=xxx 参数，登录后自动跳回来源页
+     跳转白名单：仅允许 https://*.yekjw.top 及站内相对路径
+===================================================================== -->
 <style>
-    .page-container {
-        max-width: 800px;         /* 宽度限制，太宽不好看 */
-        margin: 20px auto;        /* 居中，距离顶部20px（配合新页头，不用留太远） */
-        padding: 2rem 3rem;       /* 内部留白 */
-        background: #fff;         /* 白色背景 */
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* 阴影效果 */
-        border-radius: 8px;       /* 圆角 */
-        min-height: 50vh;         /* 最小高度，避免内容太少时卡片太矮 */
+    .login-card { max-width: 420px; }
+    .login-form { display: flex; flex-direction: column; gap: 15px; }
+    .login-form label { font-size: 0.9rem; color: #555; display: block; margin-bottom: 5px; }
+    .login-form input {
+        width: 100%; box-sizing: border-box; padding: 12px 14px;
+        border: 1px solid #d9d9d9; border-radius: 8px; font-size: 1rem; outline: none;
+        transition: border-color 0.2s;
     }
-
-    /* 修复标题样式 */
-    .page-title {
-        font-size: 2rem;
-        color: #2c3e50;
-        border-bottom: 2px solid #3498db; /* 蓝色下划线 */
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-        margin-top: 0 !important; /* 强制取消顶部距离，让卡片撑开布局 */
+    .login-form input:focus { border-color: #1890ff; box-shadow: 0 0 0 3px rgba(24,144,255,0.15); }
+    .btn-login {
+        padding: 12px; background: linear-gradient(135deg, #1890ff, #096dd9); color: #fff;
+        border: none; border-radius: 8px; font-size: 1.05rem; font-weight: bold;
+        cursor: pointer; box-shadow: 0 4px 10px rgba(24,144,255,0.35); transition: all 0.2s;
     }
+    .btn-login:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .btn-login:disabled { background: #bbb; cursor: not-allowed; transform: none; }
+    .login-error {
+        display: none; background: #fff1f0; border: 1px solid #ffa39e; color: #cf1322;
+        padding: 10px 14px; border-radius: 8px; font-size: 0.9rem;
+    }
+    .login-tip { text-align: center; color: #999; font-size: 0.85rem; }
+    .account-row {
+        display: flex; justify-content: space-between; padding: 12px 0;
+        border-bottom: 1px dashed #eee; font-size: 0.95rem;
+    }
+    .account-row .k { color: #888; }
+    .account-row .v { color: #2c3e50; font-weight: 600; }
+    .v.warn { color: #cf1322; }
+    .btn-logout {
+        margin-top: 20px; width: 100%; padding: 12px; background: #fff; color: #cf1322;
+        border: 1px solid #ffa39e; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-logout:hover { background: #fff1f0; }
 </style>
 
 <div class="container">
-    <!-- 使用 .page-container 包裹内容，恢复之前的“白色卡片”外观 -->
-    <div class="page-container">
-        <h1 class="page-title">联系我</h1>
-        
-        <div class="page-content">
-            <h2 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h2><p>如果您有任何问题、建议或合作意向，欢迎随时联系我。</p>
-<h3 id="联系邮箱"><a href="#联系邮箱" class="headerlink" title="联系邮箱"></a>联系邮箱</h3><p><a href="mailto:&#x7a;&#104;&#97;&#x6f;&#119;&#x61;&#x7a;&#x68;&#x61;&#111;&#x40;&#x71;&#113;&#46;&#x63;&#111;&#109;">zhaowazhao@qq.com</a></p>
-<h3 id="微信交流"><a href="#微信交流" class="headerlink" title="微信交流"></a>微信交流</h3><p>请添加微信号：<strong>ppt66368</strong></p>
-<h3 id="留言反馈"><a href="#留言反馈" class="headerlink" title="留言反馈"></a>留言反馈</h3><p>您也可以在课件详情页留言，我们会尽快回复。</p>
-<p>感谢您的支持！</p>
+    <div class="page-container login-card">
 
+        <div id="login-box">
+            <h1 class="page-title">🔐 会员登录</h1>
+            <div class="login-error" id="login-error"></div>
+            <form class="login-form" id="login-form" onsubmit="return doLogin(event)">
+                <div>
+                    <label for="login-username">用户名</label>
+                    <input type="text" id="login-username" name="username" autocomplete="username" placeholder="请输入用户名" required>
+                </div>
+                <div>
+                    <label for="login-password">密码</label>
+                    <input type="password" id="login-password" name="password" autocomplete="current-password" placeholder="请输入密码" required>
+                </div>
+                <button type="submit" class="btn-login" id="login-submit">登 录</button>
+            </form>
+            <div class="login-tip" style="margin-top: 15px;">
+                没有账号？购买套餐后由客服开通<br>
+                忘记密码？请联系客服微信 <b>（你的微信号）</b><br>
+                下载课件请回到文章页点击「下载课件」按钮
+            </div>
         </div>
+
+        <div id="account-box" style="display:none;">
+            <h1 class="page-title">👤 我的账户</h1>
+            <div class="account-row"><span class="k">用户名</span><span class="v" id="ac-username">-</span></div>
+            <div class="account-row"><span class="k">剩余下载次数</span><span class="v" id="ac-remaining">-</span></div>
+            <div class="account-row"><span class="k">今日已下载 / 限下</span><span class="v" id="ac-today">-</span></div>
+            <div class="account-row"><span class="k">会员有效期至</span><span class="v" id="ac-expires">-</span></div>
+            <button class="btn-logout" onclick="YekjwAuth.logout()">退出登录</button>
+            <div class="login-tip" style="margin-top: 15px;">
+                回到任意文章页，底部会出现「下载课件」按钮
+            </div>
+        </div>
+
     </div>
 </div>
 
+<script src="/js/auth.js"></script>
+<script>
+    // 取 ?redirect= 参数
+    function getRedirect() {
+        try {
+            var p = new URLSearchParams(location.search);
+            return p.get('redirect') || '';
+        } catch (e) { return ''; }
+    }
+
+    function doLogin(e) {
+        e.preventDefault();
+        var errBox = document.getElementById('login-error');
+        var btn = document.getElementById('login-submit');
+        errBox.style.display = 'none';
+        btn.disabled = true;
+        btn.textContent = '登录中…';
+
+        var username = document.getElementById('login-username').value.trim();
+        var password = document.getElementById('login-password').value;
+
+        YekjwAuth.login(username, password).then(function (data) {
+            if (data.token) {
+                // 登录成功：优先跳 ?redirect=，其次 sessionStorage，最后首页
+                var redirect = getRedirect();
+                var back = '/';
+                if (redirect) {
+                    back = YekjwAuth.safeRedirect(redirect, '/');
+                } else {
+                    try {
+                        back = YekjwAuth.safeRedirect(
+                            sessionStorage.getItem('yekjw_redirect'), '/'
+                        );
+                        sessionStorage.removeItem('yekjw_redirect');
+                    } catch (e2) {}
+                }
+                window.location.href = back;
+            } else {
+                errBox.textContent = data.message || '登录失败，请稍后再试';
+                errBox.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = '登 录';
+            }
+        }).catch(function () {
+            errBox.textContent = '网络异常，无法连接登录服务，请稍后再试';
+            errBox.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = '登 录';
+        });
+        return false;
+    }
+
+    // 已登录则直接显示账户中心
+    (function () {
+        if (!window.YekjwAuth) return;
+        YekjwAuth.me().then(function (user) {
+            if (!user) return;
+            document.getElementById('login-box').style.display = 'none';
+            var box = document.getElementById('account-box');
+            box.style.display = '';
+            document.getElementById('ac-username').textContent = user.username;
+            document.getElementById('ac-remaining').textContent = user.remaining + ' / ' + user.quotaTotal + ' 次';
+            document.getElementById('ac-today').textContent = user.usedToday + ' / ' + user.dailyLimit + ' 次';
+            var d = user.expiresAt ? new Date(user.expiresAt) : null;
+            var expEl = document.getElementById('ac-expires');
+            expEl.textContent = d ? d.toLocaleDateString() : '未开通';
+            if (user.expired || user.remaining <= 0) expEl.classList.add('warn');
+        });
+    })();
+</script>
         </div>
 
     <!-- 🌟 网站页脚 -->
