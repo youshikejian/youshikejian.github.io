@@ -1024,7 +1024,7 @@ function handleLinkClick(e) {
     </div>
 
     <!-- 🌟 新增：登录与下载逻辑 -->
-    <script src="/js/auth.js"></script>
+    <script src="/js/auth.js" defer></script>
     <script>
     // 当前文章的 path（即 permalink），后端用它查找对应的网盘链接
     var POST_PATH = "/categories/语言/中班语言活动《嘘，我们有个计划》_中班.html";
@@ -1058,25 +1058,17 @@ function handleLinkClick(e) {
         dlBtn.innerHTML = '⬇️ 下载课件（今日剩 ' + user.remainingToday + ' 次 / 总剩 ' + user.remaining + ' 次）';
     }
 
-    /* 2) 点击下载：向后端请求网盘链接（后端负责扣次数） */
+    /* 2) 点击下载：直接走 doDownload()，内部 downloadWithCheck 会先 fresh 校验再下载 */
     function yekjwDownload() {
         if (!window.YekjwAuth) return;
-        var dlBtn = document.getElementById('btn-download');
-
-        // 无次数时直接提示，不发请求
-        YekjwAuth.me().then(function (user) {
-            if (!user) { redirectToLogin(); return; }
-            if (user.remaining <= 0) { alert('下载次数已用完，请联系客服充值'); return; }
-            if (user.remainingToday <= 0) { alert('今日下载次数已用完（每天限 ' + user.dailyLimit + ' 次），明天再来吧'); return; }
-            doDownload();
-        });
+        doDownload();
     }
 
     function doDownload() {
         var dlBtn = document.getElementById('btn-download');
         if (dlBtn) { dlBtn.innerHTML = '⏳ 正在获取链接…'; }
 
-        YekjwAuth.download(POST_PATH).then(function (data) {
+        YekjwAuth.downloadWithCheck(POST_PATH).then(function (data) {
             if (dlBtn) { dlBtn.innerHTML = '⬇️ 下载课件'; }
 
             if (data._status === 200 && data.ok) {
